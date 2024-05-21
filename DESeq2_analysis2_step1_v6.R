@@ -390,27 +390,27 @@ dim(res_pp_SZ_sig)[1]
 dim(res_sa_SZ_sig)[1]
 dim(res_bd_SZ_sig)[1]
 
-# #write out the individual genes that are not significantly differentially expressed between the 2 controls for each pop:
-# write.csv(SA_C1_2_no_DE, "SA_C1_2_no_DE_18_05_23.csv")
-# write.csv(BD_C1_2_no_DE, "BD_C1_2_no_DE_18_05_23.csv")
-# write.csv(GR_C1_2_no_DE, "GR_C1_2_no_DE_18_05_23.csv")
-# write.csv(PP_C1_2_no_DE, "PP_C1_2_no_DE_18_05_23.csv")
-# 
-# #write out genes that are DE and not DE from sets analysed in may 23 (zinc/salt comparisons)
-# #no significant DE:
-# write.csv(res_SZ_grsa_no_DE, "res_SZ_grsa_no_DE_18_05_23.csv")
-# write.csv(res_SZ_ppbd_no_DE, "res_SZ_ppbd_no_DE_18_05_23.csv")
-# write.csv(res_gr_SZ_no_DE, "res_gr_SZ_no_DE_18_05_23.csv")
-# write.csv(res_pp_SZ_no_DE, "res_pp_SZ_no_DE_18_05_23.csv")
-# write.csv(res_sa_SZ_no_DE, "res_sa_SZ_no_DE_18_05_23.csv")
-# write.csv(res_bd_SZ_no_DE, "res_bd_SZ_no_DE_18_05_23.csv")
-# #significant DE:
-# write.csv(res_SZ_grsa_sig, "res_SZ_grsa_sig_18_05_23.csv")
-# write.csv(res_SZ_ppbd_sig, "res_SZ_ppbd_sig_18_05_23.csv")
-# write.csv(res_gr_SZ_sig, "res_gr_SZ_sig_18_05_23.csv")
-# write.csv(res_pp_SZ_sig, "res_pp_SZ_sig_18_05_23.csv")
-# write.csv(res_sa_SZ_sig, "res_sa_SZ_sig_18_05_23.csv")
-# write.csv(res_bd_SZ_sig, "res_bd_SZ_sig_18_05_23.csv")
+#write out the individual genes that are not significantly differentially expressed between the 2 controls for each pop:
+write.csv(SA_C1_2_no_DE, "SA_C1_2_no_DE_18_05_23.csv")
+write.csv(BD_C1_2_no_DE, "BD_C1_2_no_DE_18_05_23.csv")
+write.csv(GR_C1_2_no_DE, "GR_C1_2_no_DE_18_05_23.csv")
+write.csv(PP_C1_2_no_DE, "PP_C1_2_no_DE_18_05_23.csv")
+
+#write out genes that are DE and not DE from sets analysed in may 23 (zinc/salt comparisons)
+#no significant DE:
+write.csv(res_SZ_grsa_no_DE, "res_SZ_grsa_no_DE_18_05_23.csv")
+write.csv(res_SZ_ppbd_no_DE, "res_SZ_ppbd_no_DE_18_05_23.csv")
+write.csv(res_gr_SZ_no_DE, "res_gr_SZ_no_DE_18_05_23.csv")
+write.csv(res_pp_SZ_no_DE, "res_pp_SZ_no_DE_18_05_23.csv")
+write.csv(res_sa_SZ_no_DE, "res_sa_SZ_no_DE_18_05_23.csv")
+write.csv(res_bd_SZ_no_DE, "res_bd_SZ_no_DE_18_05_23.csv")
+#significant DE:
+write.csv(res_SZ_grsa_sig, "res_SZ_grsa_sig_18_05_23.csv")
+write.csv(res_SZ_ppbd_sig, "res_SZ_ppbd_sig_18_05_23.csv")
+write.csv(res_gr_SZ_sig, "res_gr_SZ_sig_18_05_23.csv")
+write.csv(res_pp_SZ_sig, "res_pp_SZ_sig_18_05_23.csv")
+write.csv(res_sa_SZ_sig, "res_sa_SZ_sig_18_05_23.csv")
+write.csv(res_bd_SZ_sig, "res_bd_SZ_sig_18_05_23.csv")
 
 ################################################################################-
 ##4.2 Salt experiment DEsdds1 results analysis (EC in control, salt) ----
@@ -454,16 +454,16 @@ resGR_SA_S_noDE <- resGR_SA_S[resGR_SA_S$padj > 0.05,]
 resPP_BD_S_noDE <- resPP_BD_S[resPP_BD_S$padj > 0.05,]
 
 ## write out results to files:
-## mine comparison with coasts in control and salt:
-# write.csv(resGR_SA_C_sig, "resGR_SA_C_sig_18_05_23.csv")
-# write.csv(resPP_BD_C_sig, "resPP_BD_C_sig_18_05_23.csv")
-# write.csv(resGR_SA_S_sig, "resGR_SA_S_sig_18_05_23.csv")
-# write.csv(resPP_BD_S_sig, "resPP_BD_S_sig_18_05_23.csv")
-# 
-# write.csv(resGR_SA_C_noDE, "resGR_SA_C_noDE_18_05_23.csv")
-# write.csv(resPP_BD_C_noDE, "resPP_BD_C_noDE_18_05_23.csv")
-# write.csv(resGR_SA_S_noDE, "resGR_SA_S_noDE_18_05_23.csv")
-# write.csv(resPP_BD_S_noDE, "resPP_BD_S_noDE_18_05_23.csv")
+# mine comparison with coasts in control and salt:
+write.csv(resGR_SA_C_sig, "resGR_SA_C_sig_18_05_23.csv")
+write.csv(resPP_BD_C_sig, "resPP_BD_C_sig_18_05_23.csv")
+write.csv(resGR_SA_S_sig, "resGR_SA_S_sig_18_05_23.csv")
+write.csv(resPP_BD_S_sig, "resPP_BD_S_sig_18_05_23.csv")
+
+write.csv(resGR_SA_C_noDE, "resGR_SA_C_noDE_18_05_23.csv")
+write.csv(resPP_BD_C_noDE, "resPP_BD_C_noDE_18_05_23.csv")
+write.csv(resGR_SA_S_noDE, "resGR_SA_S_noDE_18_05_23.csv")
+write.csv(resPP_BD_S_noDE, "resPP_BD_S_noDE_18_05_23.csv")
 
 ################################################################################-
 ##4.3 Salt experiment sdds2 results analysis (salt plasticity) ----
@@ -534,16 +534,16 @@ dim(resBD_c_s_noDE)[1]
 dim(resGR_c_s_noDE)[1]
 dim(resPP_c_s_noDE)[1]
 
-# #wrote the DE genes to files:
-# #commented out now I have run them
-# write.csv(resSA_c_s_sig, "resSA_c_s_sig_18_05_23.csv")
-# write.csv(resBD_c_s_sig, "resBD_c_s_sig_18_05_23.csv")
-# write.csv(resGR_c_s_sig, "resGR_c_s_sig_18_05_23.csv")
-# write.csv(resPP_c_s_sig, "resPP_c_s_sig_18_05_23.csv")
-# write.csv(resSA_c_s_noDE, "resSA_c_s_noDE_18_05_23.csv")
-# write.csv(resBD_c_s_noDE, "resBD_c_s_noDE_18_05_23.csv")
-# write.csv(resGR_c_s_noDE, "resGR_c_s_noDE_18_05_23.csv")
-# write.csv(resPP_c_s_noDE, "resPP_c_s_noDE_18_05_23.csv")
+#wrote the DE genes to files:
+#comment out when run:
+write.csv(resSA_c_s_sig, "resSA_c_s_sig_18_05_23.csv")
+write.csv(resBD_c_s_sig, "resBD_c_s_sig_18_05_23.csv")
+write.csv(resGR_c_s_sig, "resGR_c_s_sig_18_05_23.csv")
+write.csv(resPP_c_s_sig, "resPP_c_s_sig_18_05_23.csv")
+write.csv(resSA_c_s_noDE, "resSA_c_s_noDE_18_05_23.csv")
+write.csv(resBD_c_s_noDE, "resBD_c_s_noDE_18_05_23.csv")
+write.csv(resGR_c_s_noDE, "resGR_c_s_noDE_18_05_23.csv")
+write.csv(resPP_c_s_noDE, "resPP_c_s_noDE_18_05_23.csv")
 
 ################################################################################-
 ##4.4 Zinc experiment zdds1 results analysis (zinc population comparisons) ----
@@ -613,15 +613,15 @@ dim(resZ_GR_SA_Z_noDE)[1]
 dim(resZ_PP_BD_Z_noDE)[1]
 
 # #write to files:
-# write.csv(resZ_GR_SA_C_sig, "resZ_GR_SA_C_sig_18_05_23.csv")
-# write.csv(resZ_PP_BD_C_sig, "resZ_PP_BD_C_sig_18_05_23.csv")
-# write.csv(resZ_GR_SA_Z_sig, "resZ_GR_SA_Z_sig_18_05_23.csv")
-# write.csv(resZ_PP_BD_Z_sig, "resZ_PP_BD_Z_sig_18_05_23.csv")
-# 
-# write.csv(resZ_GR_SA_C_noDE, "resZ_GR_SA_C_noDE_18_05_23.csv")
-# write.csv(resZ_PP_BD_C_noDE, "resZ_PP_BD_C_noDE_18_05_23.csv")
-# write.csv(resZ_GR_SA_Z_noDE, "resZ_GR_SA_Z_noDE_18_05_23.csv")
-# write.csv(resZ_PP_BD_Z_noDE, "resZ_PP_BD_Z_noDE_18_05_23.csv")
+write.csv(resZ_GR_SA_C_sig, "resZ_GR_SA_C_sig_18_05_23.csv")
+write.csv(resZ_PP_BD_C_sig, "resZ_PP_BD_C_sig_18_05_23.csv")
+write.csv(resZ_GR_SA_Z_sig, "resZ_GR_SA_Z_sig_18_05_23.csv")
+write.csv(resZ_PP_BD_Z_sig, "resZ_PP_BD_Z_sig_18_05_23.csv")
+
+write.csv(resZ_GR_SA_C_noDE, "resZ_GR_SA_C_noDE_18_05_23.csv")
+write.csv(resZ_PP_BD_C_noDE, "resZ_PP_BD_C_noDE_18_05_23.csv")
+write.csv(resZ_GR_SA_Z_noDE, "resZ_GR_SA_Z_noDE_18_05_23.csv")
+write.csv(resZ_PP_BD_Z_noDE, "resZ_PP_BD_Z_noDE_18_05_23.csv")
 
 ################################################################################-
 ##4.5 Zinc experiment zdds2 results analysis (Zinc plasticity) ----
@@ -685,16 +685,16 @@ dim(resBD_c_z_noDE)[1]
 dim(resGR_c_z_noDE)[1]
 dim(resPP_c_z_noDE)[1]
 
-# #write the results out
-# write.csv(resSA_c_z_sig, "resSA_c_z_sig_18_05_23.csv")
-# write.csv(resBD_c_z_sig, "resBD_c_z_sig_18_05_23.csv")
-# write.csv(resGR_c_z_sig, "resGR_c_z_sig_18_05_23.csv")
-# write.csv(resPP_c_z_sig, "resPP_c_z_sig_18_05_23.csv")
-# 
-# write.csv(resSA_c_z_noDE, "resSA_c_z_noDE_18_05_23.csv")
-# write.csv(resBD_c_z_noDE, "resBD_c_z_noDE_18_05_23.csv")
-# write.csv(resGR_c_z_noDE, "resGR_c_z_noDE_18_05_23.csv")
-# write.csv(resPP_c_z_noDE, "resPP_c_z_noDE_18_05_23.csv")
+#write the results out
+write.csv(resSA_c_z_sig, "resSA_c_z_sig_18_05_23.csv")
+write.csv(resBD_c_z_sig, "resBD_c_z_sig_18_05_23.csv")
+write.csv(resGR_c_z_sig, "resGR_c_z_sig_18_05_23.csv")
+write.csv(resPP_c_z_sig, "resPP_c_z_sig_18_05_23.csv")
+
+write.csv(resSA_c_z_noDE, "resSA_c_z_noDE_18_05_23.csv")
+write.csv(resBD_c_z_noDE, "resBD_c_z_noDE_18_05_23.csv")
+write.csv(resGR_c_z_noDE, "resGR_c_z_noDE_18_05_23.csv")
+write.csv(resPP_c_z_noDE, "resPP_c_z_noDE_18_05_23.csv")
 
 
 ############################################################################-
@@ -738,8 +738,8 @@ dim(resPP_c_z_noDE)[1]
 # write.csv(lfcBD_c_s, "lfcBD_c_s_sig_20_06_23.csv")
 # write.csv(lfcGR_c_s, "lfcGR_c_s_sig_20_06_23.csv")
 # write.csv(lfcPP_c_s, "lfcPP_c_s_sig_20_06_23.csv")
-
-
+#
+#
 #write.csv(lfcSA_c_s_sig, "lfcSA_c_s_sig_20_06_23.csv")
 
 
