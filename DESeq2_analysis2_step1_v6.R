@@ -933,19 +933,19 @@ setFplot_page(page = "a4", margins = "normal", units = "tw", pt = 20, reset = FA
 ####################################################################################-
 #7. Plot the normalised counts for all the genes in the dataset ----
 ###############################################################################-
-# 
-# #run DEseq estimate size factors
-# alldds1_SF <- estimateSizeFactors(alldds1)
-# alldds1_norm_counts <- counts(alldds1_SF, normalized=TRUE)
-# 
-# #check the counts to see what they look like :)
-# dim(alldds1_norm_counts)[1] #30178 dimension
-# str(alldds1_norm_counts)
-# hist(rowSums((alldds1_norm_counts)), breaks = 5000, xlim = c(0,20000))
-# 
-# #30178 genes are filtered in both and common across both comparisons
-# #write to a file:
-# #write.csv(alldds1_norm_counts, "alldds1_norm_counts_18_05_23.csv") 
+
+#run DEseq estimate size factors
+alldds1_SF <- estimateSizeFactors(alldds1)
+alldds1_norm_counts <- counts(alldds1_SF, normalized=TRUE)
+
+#check the counts to see what they look like :)
+dim(alldds1_norm_counts)[1] #30178 dimension
+str(alldds1_norm_counts)
+hist(rowSums((alldds1_norm_counts)), breaks = 5000, xlim = c(0,20000))
+
+#30178 genes are filtered in both and common across both comparisons
+#write to a file:
+write.csv(alldds1_norm_counts, "alldds1_norm_counts_18_05_23.csv")
 # 
 # #####
 # #7.0checking some genes for counts ----

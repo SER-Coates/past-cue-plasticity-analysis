@@ -1,7 +1,7 @@
 #########################################################################################-
 #############                         SARAH COATES                            ###########-
 #############           Analysis 2 of DEseq2 significantly DE loci            ###########-
-#############                     Salt and zinc analysis       v5               ###########-
+#############                     Salt and zinc analysis       v6               ###########-
 #############                                                                 ###########-
 #########################################################################################-
 
@@ -10,7 +10,7 @@
 ######################################################-
 
 #clear workspace
-remove(list=ls())
+#remove(list=ls())
 
 #set working directory if needed
 #setwd()
@@ -128,7 +128,7 @@ safe_colorblind_palette1 <- c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#3322
 ##0.4 load generally useful files (aka annotation file):
 
 #read in the functional annotations table:
-fun_annot <- setDT(read.csv("best.filt.annots.emapper_R_import.csv", sep = ",", header = T))
+fun_annot <- setDT(read.csv("R_input_files/best.filt.annots.emapper_R_import.csv", sep = ",", header = T))
 str(fun_annot)
 
 ##0.5 Important abbreviations
@@ -158,76 +158,76 @@ str(fun_annot)
 
 ##1.1 Results from the combined data (DEalldds1) ----
 
-##load counts file for combined experiment data
-dds1_all_norm_counts <- setDT(read.csv("alldds1_norm_counts_18_05_23.csv", sep = ","))
+##load counts file for combined experiment data (as out put from script step 1)
+dds1_all_norm_counts <- setDT(read.csv("R_input_files/alldds1_norm_counts_18_05_23.csv", sep = ","))
 rownames(dds1_all_norm_counts) <- dds1_all_norm_counts$X
 
-#control1-2 comparison across experiments
-SA_C1_2_no_DE <- setDT(read.csv("SA_C1_2_no_DE_18_05_23.csv"))
-BD_C1_2_no_DE <- setDT(read.csv("BD_C1_2_no_DE_18_05_23.csv"))
-GR_C1_2_no_DE <- setDT(read.csv("GR_C1_2_no_DE_18_05_23.csv"))
-PP_C1_2_no_DE <- setDT(read.csv("PP_C1_2_no_DE_18_05_23.csv"))
+#control1-2 comparison across experiments (as output from previous script step 1)
+SA_C1_2_no_DE <- setDT(read.csv("R_input_files/SA_C1_2_no_DE_18_05_23.csv"))
+BD_C1_2_no_DE <- setDT(read.csv("R_input_files/BD_C1_2_no_DE_18_05_23.csv"))
+GR_C1_2_no_DE <- setDT(read.csv("R_input_files/GR_C1_2_no_DE_18_05_23.csv"))
+PP_C1_2_no_DE <- setDT(read.csv("R_input_files/PP_C1_2_no_DE_18_05_23.csv"))
 
 #SZ comparisons between both data
-res_SZgrsa_no_DE <- setDT(read.csv("res_SZ_grsa_no_DE_18_05_23.csv"))
-res_SZppbd_no_DE <- setDT(read.csv("res_SZ_ppbd_no_DE_18_05_23.csv"))
-res_SZsa_no_DE <- setDT(read.csv("res_sa_SZ_no_DE_18_05_23.csv"))
-res_SZbd_no_DE <- setDT(read.csv("res_bd_SZ_no_DE_18_05_23.csv"))
-res_SZgr_no_DE <- setDT(read.csv("res_gr_SZ_no_DE_18_05_23.csv"))
-res_SZpp_no_DE <- setDT(read.csv("res_pp_SZ_no_DE_18_05_23.csv"))
+res_SZgrsa_no_DE <- setDT(read.csv("R_input_files/res_SZ_grsa_no_DE_18_05_23.csv"))
+res_SZppbd_no_DE <- setDT(read.csv("R_input_files/res_SZ_ppbd_no_DE_18_05_23.csv"))
+res_SZsa_no_DE <- setDT(read.csv("R_input_files/res_sa_SZ_no_DE_18_05_23.csv"))
+res_SZbd_no_DE <- setDT(read.csv("R_input_files/res_bd_SZ_no_DE_18_05_23.csv"))
+res_SZgr_no_DE <- setDT(read.csv("R_input_files/res_gr_SZ_no_DE_18_05_23.csv"))
+res_SZpp_no_DE <- setDT(read.csv("R_input_files/res_pp_SZ_no_DE_18_05_23.csv"))
 #significant DE:
-res_SZgrsa_sig <- setDT(read.csv("res_SZ_grsa_sig_18_05_23.csv"))
-res_SZppbd_sig <- setDT(read.csv("res_SZ_ppbd_sig_18_05_23.csv"))
-res_SZsa_sig <- setDT(read.csv("res_sa_SZ_sig_18_05_23.csv"))
-res_SZbd_sig <- setDT(read.csv("res_bd_SZ_sig_18_05_23.csv"))
-res_SZgr_sig <- setDT(read.csv("res_gr_SZ_sig_18_05_23.csv"))
-res_SZpp_sig <- setDT(read.csv("res_pp_SZ_sig_18_05_23.csv"))
+res_SZgrsa_sig <- setDT(read.csv("R_input_files/res_SZ_grsa_sig_18_05_23.csv"))
+res_SZppbd_sig <- setDT(read.csv("R_input_files/res_SZ_ppbd_sig_18_05_23.csv"))
+res_SZsa_sig <- setDT(read.csv("R_input_files/res_sa_SZ_sig_18_05_23.csv"))
+res_SZbd_sig <- setDT(read.csv("R_input_files/res_bd_SZ_sig_18_05_23.csv"))
+res_SZgr_sig <- setDT(read.csv("R_input_files/res_gr_SZ_sig_18_05_23.csv"))
+res_SZpp_sig <- setDT(read.csv("R_input_files/res_pp_SZ_sig_18_05_23.csv"))
 
 ##1.2 load salt experiment results ----
 
 # significant results salt exp DE between population pairs within treatments:
-resGR_SA_C_sig <- setDT(read.csv("resGR_SA_C_sig_18_05_23.csv", sep = ","))
-resPP_BD_C_sig <- setDT(read.csv("resPP_BD_C_sig_18_05_23.csv", sep = ","))
-resGR_SA_S_sig <- setDT(read.csv("resGR_SA_S_sig_18_05_23.csv", sep = ","))
-resPP_BD_S_sig <- setDT(read.csv("resPP_BD_S_sig_18_05_23.csv", sep = ","))
+resGR_SA_C_sig <- setDT(read.csv("R_input_files/resGR_SA_C_sig_18_05_23.csv", sep = ","))
+resPP_BD_C_sig <- setDT(read.csv("R_input_files/resPP_BD_C_sig_18_05_23.csv", sep = ","))
+resGR_SA_S_sig <- setDT(read.csv("R_input_files/resGR_SA_S_sig_18_05_23.csv", sep = ","))
+resPP_BD_S_sig <- setDT(read.csv("R_input_files/resPP_BD_S_sig_18_05_23.csv", sep = ","))
 
 #non-significant results salt exp between pop pairs - only import if needed
 
 #significant results salt exp within population comparisons between treatments:
-resSA_c_s_sig <- setDT(read.csv("resSA_c_s_sig_18_05_23.csv", sep = ","))
-resBD_c_s_sig <- setDT(read.csv("resBD_c_s_sig_18_05_23.csv", sep = ","))
-resGR_c_s_sig <- setDT(read.csv("resGR_c_s_sig_18_05_23.csv", sep = ","))
-resPP_c_s_sig <- setDT(read.csv("resPP_c_s_sig_18_05_23.csv", sep = ","))
+resSA_c_s_sig <- setDT(read.csv("R_input_files/resSA_c_s_sig_18_05_23.csv", sep = ","))
+resBD_c_s_sig <- setDT(read.csv("R_input_files/resBD_c_s_sig_18_05_23.csv", sep = ","))
+resGR_c_s_sig <- setDT(read.csv("R_input_files/resGR_c_s_sig_18_05_23.csv", sep = ","))
+resPP_c_s_sig <- setDT(read.csv("R_input_files/resPP_c_s_sig_18_05_23.csv", sep = ","))
 
 #no DE no response to salt.
-resSA_c_s_noDE <- setDT(read.csv("resSA_c_s_noDE_18_05_23.csv", sep = ","))
-resBD_c_s_noDE <- setDT(read.csv("resBD_c_s_noDE_18_05_23.csv", sep = ","))
-resGR_c_s_noDE <- setDT(read.csv("resGR_c_s_noDE_18_05_23.csv", sep = ","))
-resPP_c_s_noDE <- setDT(read.csv("resPP_c_s_noDE_18_05_23.csv", sep = ","))
+resSA_c_s_noDE <- setDT(read.csv("R_input_files/resSA_c_s_noDE_18_05_23.csv", sep = ","))
+resBD_c_s_noDE <- setDT(read.csv("R_input_files/resBD_c_s_noDE_18_05_23.csv", sep = ","))
+resGR_c_s_noDE <- setDT(read.csv("R_input_files/resGR_c_s_noDE_18_05_23.csv", sep = ","))
+resPP_c_s_noDE <- setDT(read.csv("R_input_files/resPP_c_s_noDE_18_05_23.csv", sep = ","))
 
 ##1.3 Add imports for zinc results ----
 
 #dds1:
-resZ_GR_SA_C_sig <- setDT(read.csv("resZ_GR_SA_C_sig_18_05_23.csv", sep = ","))
-resZ_PP_BD_C_sig <- setDT(read.csv("resZ_PP_BD_C_sig_18_05_23.csv", sep = ","))
-resZ_GR_SA_Z_sig <- setDT(read.csv("resZ_GR_SA_Z_sig_18_05_23.csv", sep = ","))
-resZ_PP_BD_Z_sig <- setDT(read.csv("resZ_PP_BD_Z_sig_18_05_23.csv", sep = ","))
+resZ_GR_SA_C_sig <- setDT(read.csv("R_input_files/resZ_GR_SA_C_sig_18_05_23.csv", sep = ","))
+resZ_PP_BD_C_sig <- setDT(read.csv("R_input_files/resZ_PP_BD_C_sig_18_05_23.csv", sep = ","))
+resZ_GR_SA_Z_sig <- setDT(read.csv("R_input_files/resZ_GR_SA_Z_sig_18_05_23.csv", sep = ","))
+resZ_PP_BD_Z_sig <- setDT(read.csv("R_input_files/resZ_PP_BD_Z_sig_18_05_23.csv", sep = ","))
 
 #non significant EC within zinc:
-resZ_GR_SA_Z_noDE <- setDT(read.csv("resZ_GR_SA_Z_noDE_18_05_23.csv", sep = ","))
-resZ_PP_BD_Z_noDE <- setDT(read.csv("resZ_PP_BD_Z_noDE_18_05_23.csv", sep = ","))
+resZ_GR_SA_Z_noDE <- setDT(read.csv("R_input_files/resZ_GR_SA_Z_noDE_18_05_23.csv", sep = ","))
+resZ_PP_BD_Z_noDE <- setDT(read.csv("R_input_files/resZ_PP_BD_Z_noDE_18_05_23.csv", sep = ","))
 
 #dds2 significant results zinc exp within population comparisons between treatments:
-resSA_c_z_sig <- setDT(read.csv("resSA_c_z_sig_18_05_23.csv", sep = ","))
-resBD_c_z_sig <- setDT(read.csv("resBD_c_z_sig_18_05_23.csv", sep = ","))
-resGR_c_z_sig <- setDT(read.csv("resGR_c_z_sig_18_05_23.csv", sep = ","))
-resPP_c_z_sig <- setDT(read.csv("resPP_c_z_sig_18_05_23.csv", sep = ","))
+resSA_c_z_sig <- setDT(read.csv("R_input_files/resSA_c_z_sig_18_05_23.csv", sep = ","))
+resBD_c_z_sig <- setDT(read.csv("R_input_files/resBD_c_z_sig_18_05_23.csv", sep = ","))
+resGR_c_z_sig <- setDT(read.csv("R_input_files/resGR_c_z_sig_18_05_23.csv", sep = ","))
+resPP_c_z_sig <- setDT(read.csv("R_input_files/resPP_c_z_sig_18_05_23.csv", sep = ","))
 
 #dds2 non-significant results zinc exp within population comparisons between treatments:
-resSA_c_z_noDE <- setDT(read.csv("resSA_c_z_noDE_18_05_23.csv", sep = ","))
-resBD_c_z_noDE <- setDT(read.csv("resBD_c_z_noDE_18_05_23.csv", sep = ","))
-resGR_c_z_noDE <- setDT(read.csv("resGR_c_z_noDE_18_05_23.csv", sep = ","))
-resPP_c_z_noDE <- setDT(read.csv("resPP_c_z_noDE_18_05_23.csv", sep = ","))
+resSA_c_z_noDE <- setDT(read.csv("R_input_files/resSA_c_z_noDE_18_05_23.csv", sep = ","))
+resBD_c_z_noDE <- setDT(read.csv("R_input_files/resBD_c_z_noDE_18_05_23.csv", sep = ","))
+resGR_c_z_noDE <- setDT(read.csv("R_input_files/resGR_c_z_noDE_18_05_23.csv", sep = ","))
+resPP_c_z_noDE <- setDT(read.csv("R_input_files/resPP_c_z_noDE_18_05_23.csv", sep = ","))
 
 ################################################################-
 #2.0 FORMAT RESULTS ready for downstream analysis ----
@@ -632,6 +632,10 @@ ECZ$sign_ECZ <- ECZ$log2FoldChange_Zgrsa_sig*ECZ$log2FoldChange_Zppbd_sig
 ECZ_same <- ECZ[ECZ$sign_ECZ > 0,]                                  
 ECZ_same_count <- dim(ECZ_same)[1] #9121
 
+ECZ_same_up <- ECZ_same[ECZ_same$log2FoldChange_Zgrsa_sig > 0,]
+ECZ_same_down <- ECZ_same[ECZ_same$log2FoldChange_Zgrsa_sig < 0,]
+dim(ECZ_same_down)
+
 # #not using fisher test so code below commented out:
 # #fisher test for data overlap:
 # my_fisher_test(overlap = ECZ_same_count, set1 = dim(Zgrsa_sig1)[1],
@@ -666,6 +670,10 @@ dim(ECC)[1]
 ECC$signECC <- ECC$log2FoldChange_C1grsa_sig*ECC$log2FoldChange_C2ppbd_sig
 ECC_same <- ECC[ECC$signECC > 0,]
 ECC_same_count <- dim(ECC_same)[1] #124
+
+ECC_same_up <- ECC_same[ECC_same$log2FoldChange_C1grsa_sig > 0,]
+ECC_same_down <- ECC_same[ECC_same$log2FoldChange_C1grsa_sig < 0,]
+dim(ECC_same_down)
 
 ##4.3 evolutionary change in salt response if needed ----
 
@@ -708,6 +716,14 @@ ASP$signASP <- ASP$log2FoldChange_CSsa_sig*ASP$log2FoldChange_CSbd_sig
 ASP_same <- ASP[ASP$signASP > 0,]
 ASP_same_count <- dim(ASP_same)[1] #957
 
+#ASP upregulated and downregulated shared genes:
+
+ASP_up <- ASP[ASP$log2FoldChange_CSbd_sig > 0,]
+ASP_down <- ASP[ASP$log2FoldChange_CSbd_sig < 0,] 
+
+dim(ASP_up)[1] #259
+dim(ASP_down)[1] #700
+
 ##5.2 Descendant (Mine) salt plasticity ----
 
 DSP <- merge(CSgr_sig1, CSpp_sig1, by = "Names")
@@ -715,6 +731,9 @@ dim(DSP)[1] #156
 DSP$signDSP <- DSP$log2FoldChange_CSgr_sig*DSP$log2FoldChange_CSpp_sig
 DSP_same <- DSP[DSP$signDSP > 0,]
 DSP_same_count <- dim(DSP_same)[1] #155
+
+DSP_same_up <- DSP_same[DSP_same$log2FoldChange_CSgr_sig > 0,]
+DSP_same_down <- DSP_same[DSP_same$log2FoldChange_CSgr_sig < 0,]
 
 ###5.2.1 Descendent (mine) genes with no significant salt plasticity: ----
 no_DSP <-  merge(CSgr_ns1, CSpp_ns1, by = "Names")
@@ -734,6 +753,26 @@ AZP$signAZP <- AZP$log2FoldChange_CZsa_sig*AZP$log2FoldChange_CZbd_sig
 AZP_same <- AZP[AZP$signAZP > 0,]
 AZP_same_count <- dim(AZP_same)[1] #10933
 
+AZP_up <- AZP[AZP$log2FoldChange_CZbd_sig > 0,]
+AZP_down <- AZP[AZP$log2FoldChange_CZbd_sig < 0,] 
+
+dim(AZP_up)[1] #4984
+dim(AZP_down)[1] #6014
+
+###5.3.1 extra set comparing AZP and ASP directions:
+
+ASP_AZP <- merge(ASP_same, AZP_same, by = "Names")
+dim(ASP_AZP)[1] #577
+ASP_AZP$signASP_AZP <- ASP_AZP$log2FoldChange_CZsa_sig*ASP_AZP$log2FoldChange_CSbd_sig
+
+ASP_AZP_diff <- ASP_AZP[ASP_AZP$signASP_AZP < 0,]
+dim(ASP_AZP_diff)[1] #411
+
+ASP_AZP_diff_upsalt <- ASP_AZP_diff[ASP_AZP_diff$log2FoldChange_CSsa_sig > 0,] 
+ASP_AZP_diff_downsalt <- ASP_AZP_diff[ASP_AZP_diff$log2FoldChange_CSsa_sig < 0,] 
+
+#view(ASP_AZP_diff_upsalt)
+
 ##5.4 Descendant (Mine) zinc plasticity ----
 
 DZP <- merge(CZgr_sig1, CZpp_sig1, by = "Names")
@@ -741,6 +780,9 @@ dim(DZP)[1] #143
 DZP$signDZP <- DZP$log2FoldChange_CZgr_sig*DZP$log2FoldChange_CZpp_sig
 DZP_same <- DZP[DZP$signDZP > 0,]
 DZP_same_count <- dim(DZP_same)[1] #143
+
+DZP_same_up <- DZP_same[DZP_same$log2FoldChange_CZgr_sig > 0,]
+DZP_same_down <- DZP_same[DZP_same$log2FoldChange_CZgr_sig < 0,]
 
 ###5.4.1 Derived zinc plasticity (DZP with ECZ) ----
 
@@ -758,6 +800,7 @@ dim(no_DZP)[1] #18394
 
 no_DZPfilt1 <- no_DZP[no_DZP$log2FoldChange_CZgr_ns %between% c(-1, 1) ,]
 no_DZPfilt2 <- no_DZP[no_DZP$log2FoldChange_CZpp_ns %between% c(-1, 1) ,]
+
 
 ##5.5 randomisation tests ASP, DSP, AZP, DZP ----
 
@@ -861,6 +904,8 @@ ASP_EDZP_SZcst <- ASP_EDZP_same[which(ASP_EDZP_same$Names %in% SZcst_same$Names)
 
 #28 genes with Cue transfer!
 
+#write.csv(ASP_EDZP_SZcst, "cue_transfer_05_07_24.csv")
+
 ## 8.1 sub pattern of harmonisation ----
 #where ASP, EDZP and EDSP are the same direction
 
@@ -911,6 +956,9 @@ dim(ASP_ECC_noDZP_same)[1] #38
 ##9.2 Co-option gene set: ----
 
 ASP_ECC_noDZP_SZcst <- ASP_ECC_noDZP_same[which(ASP_ECC_noDZP_same$Names %in% SZcst_same$Names),] #33
+
+cooption_gene_set <- ASP_ECC_noDZP_SZcst$Names
+#write.csv(cooption_gene_set, "cooption_gene_set_05_07_24.csv")
 
 ###9.2.1 sub pattern 1 - full cooption - no significant plasticity in salt ----
 
@@ -1124,7 +1172,7 @@ zinc_table1 <- data.frame(geographical_location, Coastal_zinc_plastic_genes, Min
 
 
 #########################################################-
-#11.0 Visualising results ----
+#11.0 MAIN AIM Visualising results ----
 #########################################################-
 
 ##11.1  Make overall table of results for visuals using normalised counts ----
@@ -1133,6 +1181,8 @@ CC_norm_counts2 <- as.data.frame(dds1_all_norm_counts[which(rownames(dds1_all_no
 colnames(CC_norm_counts2)
 str(CC_norm_counts2)
 dim(CC_norm_counts2)[1]
+
+head(CC_norm_counts2)
 
 #rename some columns to make them easier to transform.  
 names(CC_norm_counts2)[names(CC_norm_counts2) == "GR.RNA.6_C_5"] <- "GRRNA6_C_5"
@@ -1143,6 +1193,9 @@ names(CC_norm_counts2)[names(CC_norm_counts2) == "GR.RNA.12_C_23"] <- "GRRNA12_C
 names(CC_norm_counts2)[names(CC_norm_counts2) == "GR.RNA.12_S_24"] <- "GRRNA12_S_24"
 names(CC_norm_counts2)[names(CC_norm_counts2) == "PP.RNA.1_C_1"] <- "PPRNA1_C_1"
 names(CC_norm_counts2)[names(CC_norm_counts2) == "PP.RNA.1_S_2"] <- "PPRNA1_S_2"
+
+#write out for next step in new analysis script for Pst
+#write.csv(CC_norm_counts2, "CC_norm_counts2_20_06_24.csv")
 
 CC_norm_counts3 <- pivot_longer(CC_norm_counts2, 
                                 cols = c(SA02_C_7,  SA04_C_15, SA07_C_11, SA6C, SA7C, SA8C,
@@ -1166,6 +1219,12 @@ colnames(CC_norm_counts3)[1] <- c("gene_name")
 #colnames(CC_norm_counts3)
 
 dim(CC_norm_counts3)[1]
+
+head(CC_norm_counts3)
+
+#write out for next step in new analysis script for Pst
+write.csv(CC_norm_counts3, "CC_norm_counts3_20_06_24.csv")
+
 
 # # checking norm vs log norm count distribution
 # hist(CC_norm_counts3$norm_count)
