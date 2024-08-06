@@ -1,7 +1,7 @@
 ########################################################################-
 #############                  SARAH COATES                     #################-
 #############                 DEseq2 analysis                   #################-
-############# Salt and Zinc expression DE comparisons and PCAs  #################-
+############# Salt and Zinc expression DE comparisons low stringency (alpha = 0.1)  #################-
 ########################################################################-
 
 ################################################-
@@ -9,9 +9,9 @@
 ################################################-
 
 #clear anything previous:
-#remove(list=ls())
-#set working directory if needed
-#setwd()
+remove(list=ls())
+#check working directory if needed
+#getwd()
 #0.1 Install and load required packages ####
 
 #package installation:
@@ -305,33 +305,33 @@ dim(DEzdds2)[1] #31779
 #######################################################################-
 
 #control comparisons to find those genes that are consistent in expression between experimental controls:
-res_SA_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "SA_C1", "SA_C2"), alpha = 0.05)
+res_SA_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "SA_C1", "SA_C2"), alpha = 0.1)
 res_SA_C1_2$Names <- row.names(res_SA_C1_2)
-res_BD_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "BD_C1", "BD_C2"), alpha = 0.05) 
+res_BD_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "BD_C1", "BD_C2"), alpha = 0.1) 
 res_BD_C1_2$Names <- row.names(res_BD_C1_2)
-res_GR_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "GR_C1", "GR_C2"), alpha = 0.05) 
+res_GR_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "GR_C1", "GR_C2"), alpha = 0.1) 
 res_GR_C1_2$Names <- row.names(res_GR_C1_2)
-res_PP_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "PP_C1", "PP_C2"), alpha = 0.05) 
+res_PP_C1_2 <- results(DEalldds1, contrast=c("Pop_treat", "PP_C1", "PP_C2"), alpha = 0.1) 
 res_PP_C1_2$Names <- row.names(res_PP_C1_2)
 
-lfc_SA_C1_2 = lfcShrink(DEalldds1, contrast=c("Pop_treat", "SA_C1", "BD_C1"), type="ashr")
-lfc_SA_C1_2$Names = rownames(lfc_SA_C1_2)
-view(lfc_SA_C1_2)
+# lfc_SA_C1_2 = lfcShrink(DEalldds1, contrast=c("Pop_treat", "SA_C1", "BD_C1"), type="ashr")
+# lfc_SA_C1_2$Names = rownames(lfc_SA_C1_2)
+# view(lfc_SA_C1_2)
 
 #compare salt treatment in coasts to zinc treatment in mines
-res_SZ_grsa <- results(DEalldds1, contrast=c("Pop_treat", "GR_Z", "SA_S"), alpha = 0.05)
+res_SZ_grsa <- results(DEalldds1, contrast=c("Pop_treat", "GR_Z", "SA_S"), alpha = 0.1)
 res_SZ_grsa$Names <- row.names(res_SZ_grsa)
-res_SZ_ppbd <- results(DEalldds1, contrast=c("Pop_treat", "PP_Z", "BD_S"), alpha = 0.05)
+res_SZ_ppbd <- results(DEalldds1, contrast=c("Pop_treat", "PP_Z", "BD_S"), alpha = 0.1)
 res_SZ_ppbd$Names <- row.names(res_SZ_ppbd)
 
 #compare salt vs zinc in individual coasts and individual mines
-res_gr_SZ <- results(DEalldds1, contrast=c("Pop_treat", "GR_Z", "GR_S"), alpha = 0.05)
+res_gr_SZ <- results(DEalldds1, contrast=c("Pop_treat", "GR_Z", "GR_S"), alpha = 0.1)
 res_gr_SZ$Names <- row.names(res_gr_SZ )
-res_pp_SZ <- results(DEalldds1, contrast=c("Pop_treat", "PP_Z", "PP_S"), alpha = 0.05)
+res_pp_SZ <- results(DEalldds1, contrast=c("Pop_treat", "PP_Z", "PP_S"), alpha = 0.1)
 res_pp_SZ$Names <- row.names(res_pp_SZ)
-res_sa_SZ <- results(DEalldds1, contrast=c("Pop_treat", "SA_Z", "SA_S"), alpha = 0.05)
+res_sa_SZ <- results(DEalldds1, contrast=c("Pop_treat", "SA_Z", "SA_S"), alpha = 0.1)
 res_sa_SZ$Names <- row.names(res_sa_SZ)
-res_bd_SZ <- results(DEalldds1, contrast=c("Pop_treat", "BD_Z", "BD_S"), alpha = 0.05)
+res_bd_SZ <- results(DEalldds1, contrast=c("Pop_treat", "BD_Z", "BD_S"), alpha = 0.1)
 res_bd_SZ$Names <- row.names(res_bd_SZ )
 
 #remove any NAs by taking only non NA data entries
@@ -348,27 +348,27 @@ res_pp_SZ <- res_pp_SZ[is.na(res_pp_SZ$padj) == FALSE,]
 res_sa_SZ <- res_sa_SZ[is.na(res_sa_SZ$padj) == FALSE,]
 res_bd_SZ <- res_bd_SZ[is.na(res_bd_SZ$padj) == FALSE,]
 
-#get those across C1 and C2 not sig DE. (p > 0.05)
-SA_C1_2_no_DE  <- res_SA_C1_2[res_SA_C1_2$padj > 0.05,]
-BD_C1_2_no_DE  <- res_BD_C1_2[res_BD_C1_2$padj > 0.05,]
-GR_C1_2_no_DE  <- res_GR_C1_2[res_GR_C1_2$padj > 0.05,]
-PP_C1_2_no_DE  <- res_PP_C1_2[res_PP_C1_2$padj > 0.05,]
+#get those across C1 and C2 not sig DE. (p > 0.1)
+SA_C1_2_no_DE  <- res_SA_C1_2[res_SA_C1_2$padj > 0.1,]
+BD_C1_2_no_DE  <- res_BD_C1_2[res_BD_C1_2$padj > 0.1,]
+GR_C1_2_no_DE  <- res_GR_C1_2[res_GR_C1_2$padj > 0.1,]
+PP_C1_2_no_DE  <- res_PP_C1_2[res_PP_C1_2$padj > 0.1,]
 
-#filter SZ comparisons for those not sig DE between S and Z (p > 0.05)
-res_SZ_grsa_no_DE <- res_SZ_grsa[res_SZ_grsa$padj > 0.05,] 
-res_SZ_ppbd_no_DE <- res_SZ_ppbd[res_SZ_ppbd$padj  > 0.05,]
-res_gr_SZ_no_DE <- res_gr_SZ[res_gr_SZ$padj  > 0.05,]
-res_pp_SZ_no_DE <- res_pp_SZ[res_pp_SZ$padj  > 0.05,]
-res_sa_SZ_no_DE <- res_sa_SZ[res_sa_SZ$padj  > 0.05,]
-res_bd_SZ_no_DE <- res_bd_SZ[res_bd_SZ$padj  > 0.05,]
+#filter SZ comparisons for those not sig DE between S and Z (p > 0.1)
+res_SZ_grsa_no_DE <- res_SZ_grsa[res_SZ_grsa$padj > 0.1,] 
+res_SZ_ppbd_no_DE <- res_SZ_ppbd[res_SZ_ppbd$padj  > 0.1,]
+res_gr_SZ_no_DE <- res_gr_SZ[res_gr_SZ$padj  > 0.1,]
+res_pp_SZ_no_DE <- res_pp_SZ[res_pp_SZ$padj  > 0.1,]
+res_sa_SZ_no_DE <- res_sa_SZ[res_sa_SZ$padj  > 0.1,]
+res_bd_SZ_no_DE <- res_bd_SZ[res_bd_SZ$padj  > 0.1,]
 
-#filter SZ comparisons for those sig DE between S and Z (p < 0.05)
-res_SZ_grsa_sig <- res_SZ_grsa[res_SZ_grsa$padj < 0.05,] 
-res_SZ_ppbd_sig <- res_SZ_ppbd[res_SZ_ppbd$padj  < 0.05,]
-res_gr_SZ_sig <- res_gr_SZ[res_gr_SZ$padj  < 0.05,]
-res_pp_SZ_sig <- res_pp_SZ[res_pp_SZ$padj  < 0.05,]
-res_sa_SZ_sig <- res_sa_SZ[res_sa_SZ$padj  < 0.05,]
-res_bd_SZ_sig <- res_bd_SZ[res_bd_SZ$padj  < 0.05,]
+#filter SZ comparisons for those sig DE between S and Z (p < 0.1)
+res_SZ_grsa_sig <- res_SZ_grsa[res_SZ_grsa$padj < 0.1,] 
+res_SZ_ppbd_sig <- res_SZ_ppbd[res_SZ_ppbd$padj  < 0.1,]
+res_gr_SZ_sig <- res_gr_SZ[res_gr_SZ$padj  < 0.1,]
+res_pp_SZ_sig <- res_pp_SZ[res_pp_SZ$padj  < 0.1,]
+res_sa_SZ_sig <- res_sa_SZ[res_sa_SZ$padj  < 0.1,]
+res_bd_SZ_sig <- res_bd_SZ[res_bd_SZ$padj  < 0.1,]
 
 #control comparisons for all populations
 dim(SA_C1_2_no_DE)[1] 
@@ -391,26 +391,26 @@ dim(res_sa_SZ_sig)[1]
 dim(res_bd_SZ_sig)[1]
 
 #write out the individual genes that are not significantly differentially expressed between the 2 controls for each pop:
-write.csv(SA_C1_2_no_DE, "SA_C1_2_no_DE_18_05_23.csv")
-write.csv(BD_C1_2_no_DE, "BD_C1_2_no_DE_18_05_23.csv")
-write.csv(GR_C1_2_no_DE, "GR_C1_2_no_DE_18_05_23.csv")
-write.csv(PP_C1_2_no_DE, "PP_C1_2_no_DE_18_05_23.csv")
+write.csv(SA_C1_2_no_DE, "LS_SA_C1_2_no_DE_17_07_24.csv")
+write.csv(BD_C1_2_no_DE, "LS_BD_C1_2_no_DE_17_07_24.csv")
+write.csv(GR_C1_2_no_DE, "LS_GR_C1_2_no_DE_17_07_24.csv")
+write.csv(PP_C1_2_no_DE, "LS_PP_C1_2_no_DE_17_07_24.csv")
 
 #write out genes that are DE and not DE from sets analysed in may 23 (zinc/salt comparisons)
 #no significant DE:
-write.csv(res_SZ_grsa_no_DE, "res_SZ_grsa_no_DE_18_05_23.csv")
-write.csv(res_SZ_ppbd_no_DE, "res_SZ_ppbd_no_DE_18_05_23.csv")
-write.csv(res_gr_SZ_no_DE, "res_gr_SZ_no_DE_18_05_23.csv")
-write.csv(res_pp_SZ_no_DE, "res_pp_SZ_no_DE_18_05_23.csv")
-write.csv(res_sa_SZ_no_DE, "res_sa_SZ_no_DE_18_05_23.csv")
-write.csv(res_bd_SZ_no_DE, "res_bd_SZ_no_DE_18_05_23.csv")
+write.csv(res_SZ_grsa_no_DE, "LS_res_SZ_grsa_no_DE_17_07_24.csv")
+write.csv(res_SZ_ppbd_no_DE, "LS_res_SZ_ppbd_no_DE_17_07_24.csv")
+write.csv(res_gr_SZ_no_DE, "LS_res_gr_SZ_no_DE_17_07_24.csv")
+write.csv(res_pp_SZ_no_DE, "LS_res_pp_SZ_no_DE_17_07_24.csv")
+write.csv(res_sa_SZ_no_DE, "LS_res_sa_SZ_no_DE_17_07_24.csv")
+write.csv(res_bd_SZ_no_DE, "LS_res_bd_SZ_no_DE_17_07_24.csv")
 #significant DE:
-write.csv(res_SZ_grsa_sig, "res_SZ_grsa_sig_18_05_23.csv")
-write.csv(res_SZ_ppbd_sig, "res_SZ_ppbd_sig_18_05_23.csv")
-write.csv(res_gr_SZ_sig, "res_gr_SZ_sig_18_05_23.csv")
-write.csv(res_pp_SZ_sig, "res_pp_SZ_sig_18_05_23.csv")
-write.csv(res_sa_SZ_sig, "res_sa_SZ_sig_18_05_23.csv")
-write.csv(res_bd_SZ_sig, "res_bd_SZ_sig_18_05_23.csv")
+write.csv(res_SZ_grsa_sig, "LS_res_SZ_grsa_sig_17_07_24.csv")
+write.csv(res_SZ_ppbd_sig, "LS_res_SZ_ppbd_sig_17_07_24.csv")
+write.csv(res_gr_SZ_sig, "LS_res_gr_SZ_sig_17_07_24.csv")
+write.csv(res_pp_SZ_sig, "LS_res_pp_SZ_sig_17_07_24.csv")
+write.csv(res_sa_SZ_sig, "LS_res_sa_SZ_sig_17_07_24.csv")
+write.csv(res_bd_SZ_sig, "LS_res_bd_SZ_sig_17_07_24.csv")
 
 ################################################################################-
 ##4.2 Salt experiment DEsdds1 results analysis (EC in control, salt) ----
@@ -423,16 +423,16 @@ write.csv(res_bd_SZ_sig, "res_bd_SZ_sig_18_05_23.csv")
 #mcols(resGR_SA_C, use.names = TRUE)
 
 #mines vs coasts in control and salt - EC in control and EC salt
-resGR_SA_C <- results(DEsdds1, contrast=c("Pop_treat", "GR_C", "SA_C"), alpha = 0.05)
+resGR_SA_C <- results(DEsdds1, contrast=c("Pop_treat", "GR_C", "SA_C"), alpha = 0.1)
 resGR_SA_C$Names <- row.names(resGR_SA_C)
 summary(resGR_SA_C)
-resPP_BD_C <- results(DEsdds1, contrast=c("Pop_treat", "PP_C", "BD_C"),  alpha = 0.05)
+resPP_BD_C <- results(DEsdds1, contrast=c("Pop_treat", "PP_C", "BD_C"),  alpha = 0.1)
 resPP_BD_C$Names <- row.names(resPP_BD_C)
 summary(resPP_BD_C)
-resGR_SA_S <- results(DEsdds1, contrast=c("Pop_treat", "GR_S", "SA_S"),  alpha = 0.05)
+resGR_SA_S <- results(DEsdds1, contrast=c("Pop_treat", "GR_S", "SA_S"),  alpha = 0.1)
 resGR_SA_S$Names <- row.names(resGR_SA_S)
 summary(resGR_SA_S)
-resPP_BD_S <- results(DEsdds1, contrast=c("Pop_treat", "PP_S", "BD_S"),  alpha = 0.05)
+resPP_BD_S <- results(DEsdds1, contrast=c("Pop_treat", "PP_S", "BD_S"),  alpha = 0.1)
 resPP_BD_S$Names <- row.names(resPP_BD_S)
 summary(resPP_BD_S)
 
@@ -442,28 +442,28 @@ resPP_BD_C <- resPP_BD_C[is.na(resPP_BD_C$padj) == FALSE,]
 resGR_SA_S <- resGR_SA_S[is.na(resGR_SA_S$padj) == FALSE,]
 resPP_BD_S <- resPP_BD_S[is.na(resPP_BD_S$padj) == FALSE,]
 
-#filter results for those with significant DE (P < 0.05)
-resGR_SA_C_sig <- resGR_SA_C[resGR_SA_C$padj < 0.05,]
-resPP_BD_C_sig <- resPP_BD_C[resPP_BD_C$padj < 0.05,]
-resGR_SA_S_sig <- resGR_SA_S[resGR_SA_S$padj < 0.05,]
-resPP_BD_S_sig <- resPP_BD_S[resPP_BD_S$padj < 0.05,]
+#filter results for those with significant DE (P < 0.1)
+resGR_SA_C_sig <- resGR_SA_C[resGR_SA_C$padj < 0.1,]
+resPP_BD_C_sig <- resPP_BD_C[resPP_BD_C$padj < 0.1,]
+resGR_SA_S_sig <- resGR_SA_S[resGR_SA_S$padj < 0.1,]
+resPP_BD_S_sig <- resPP_BD_S[resPP_BD_S$padj < 0.1,]
 
-resGR_SA_C_noDE <- resGR_SA_C[resGR_SA_C$padj > 0.05,]
-resPP_BD_C_noDE <- resPP_BD_C[resPP_BD_C$padj > 0.05,]
-resGR_SA_S_noDE <- resGR_SA_S[resGR_SA_S$padj > 0.05,]
-resPP_BD_S_noDE <- resPP_BD_S[resPP_BD_S$padj > 0.05,]
+resGR_SA_C_noDE <- resGR_SA_C[resGR_SA_C$padj > 0.1,]
+resPP_BD_C_noDE <- resPP_BD_C[resPP_BD_C$padj > 0.1,]
+resGR_SA_S_noDE <- resGR_SA_S[resGR_SA_S$padj > 0.1,]
+resPP_BD_S_noDE <- resPP_BD_S[resPP_BD_S$padj > 0.1,]
 
 ## write out results to files:
 # mine comparison with coasts in control and salt:
-write.csv(resGR_SA_C_sig, "resGR_SA_C_sig_18_05_23.csv")
-write.csv(resPP_BD_C_sig, "resPP_BD_C_sig_18_05_23.csv")
-write.csv(resGR_SA_S_sig, "resGR_SA_S_sig_18_05_23.csv")
-write.csv(resPP_BD_S_sig, "resPP_BD_S_sig_18_05_23.csv")
+write.csv(resGR_SA_C_sig, "LS_resGR_SA_C_sig_17_07_24.csv")
+write.csv(resPP_BD_C_sig, "LS_resPP_BD_C_sig_17_07_24.csv")
+write.csv(resGR_SA_S_sig, "LS_resGR_SA_S_sig_17_07_24.csv")
+write.csv(resPP_BD_S_sig, "LS_resPP_BD_S_sig_17_07_24.csv")
 
-write.csv(resGR_SA_C_noDE, "resGR_SA_C_noDE_18_05_23.csv")
-write.csv(resPP_BD_C_noDE, "resPP_BD_C_noDE_18_05_23.csv")
-write.csv(resGR_SA_S_noDE, "resGR_SA_S_noDE_18_05_23.csv")
-write.csv(resPP_BD_S_noDE, "resPP_BD_S_noDE_18_05_23.csv")
+write.csv(resGR_SA_C_noDE, "LS_resGR_SA_C_noDE_17_07_24.csv")
+write.csv(resPP_BD_C_noDE, "LS_resPP_BD_C_noDE_17_07_24.csv")
+write.csv(resGR_SA_S_noDE, "LS_resGR_SA_S_noDE_17_07_24.csv")
+write.csv(resPP_BD_S_noDE, "LS_resPP_BD_S_noDE_17_07_24.csv")
 
 ################################################################################-
 ##4.3 Salt experiment sdds2 results analysis (salt plasticity) ----
@@ -471,13 +471,13 @@ write.csv(resPP_BD_S_noDE, "resPP_BD_S_noDE_18_05_23.csv")
 
 #results for differential expression for pairwise comparisons of population and treatment
 #for each population test the difference in expression for salt vs control*population
-resSA_c_s <- results(DEsdds2, contrast = list("PopulationSA.TreatmentS"), alpha = 0.05) #comparison i
+resSA_c_s <- results(DEsdds2, contrast = list("PopulationSA.TreatmentS"), alpha = 0.1) #comparison i
 resSA_c_s$Names <- row.names(resSA_c_s)
-resBD_c_s <- results(DEsdds2, contrast = list("PopulationBD.TreatmentS"), alpha = 0.05) # comparison j
+resBD_c_s <- results(DEsdds2, contrast = list("PopulationBD.TreatmentS"), alpha = 0.1) # comparison j
 resBD_c_s$Names <- row.names(resBD_c_s)
-resGR_c_s <- results(DEsdds2, contrast = list("PopulationGR.TreatmentS"), alpha = 0.05) #comparison k
+resGR_c_s <- results(DEsdds2, contrast = list("PopulationGR.TreatmentS"), alpha = 0.1) #comparison k
 resGR_c_s$Names <- row.names(resGR_c_s)
-resPP_c_s <- results(DEsdds2, contrast = list("PopulationPP.TreatmentS"), alpha = 0.05) # comparison l
+resPP_c_s <- results(DEsdds2, contrast = list("PopulationPP.TreatmentS"), alpha = 0.1) # comparison l
 resPP_c_s$Names <- row.names(resPP_c_s)
 
 #dimensions check
@@ -506,11 +506,11 @@ dim(resBD_c_s)[1]
 dim(resGR_c_s)[1]
 dim(resPP_c_s)[1]
 
-#Take those results that are less than p adjusted of < 0.05
-resSA_c_s_sig <- resSA_c_s[resSA_c_s$padj < 0.05,]
-resBD_c_s_sig <- resBD_c_s[resBD_c_s$padj < 0.05,]
-resGR_c_s_sig <- resGR_c_s[resGR_c_s$padj < 0.05,]
-resPP_c_s_sig <- resPP_c_s[resPP_c_s$padj < 0.05,]
+#Take those results that are less than p adjusted of < 0.1
+resSA_c_s_sig <- resSA_c_s[resSA_c_s$padj < 0.1,]
+resBD_c_s_sig <- resBD_c_s[resBD_c_s$padj < 0.1,]
+resGR_c_s_sig <- resGR_c_s[resGR_c_s$padj < 0.1,]
+resPP_c_s_sig <- resPP_c_s[resPP_c_s$padj < 0.1,]
 
 #dimensions check
 dim(resSA_c_s_sig)[1]
@@ -518,11 +518,11 @@ dim(resBD_c_s)[1]
 dim(resGR_c_s)[1]
 dim(resPP_c_s)[1]
 
-#filter results for non sign. ones P > 0.05
-resSA_c_s_noDE <- resSA_c_s[resSA_c_s$padj > 0.05,]
-resBD_c_s_noDE <- resBD_c_s[resBD_c_s$padj > 0.05,]
-resGR_c_s_noDE <- resGR_c_s[resGR_c_s$padj > 0.05,]
-resPP_c_s_noDE <- resPP_c_s[resPP_c_s$padj > 0.05,]
+#filter results for non sign. ones P > 0.1
+resSA_c_s_noDE <- resSA_c_s[resSA_c_s$padj > 0.1,]
+resBD_c_s_noDE <- resBD_c_s[resBD_c_s$padj > 0.1,]
+resGR_c_s_noDE <- resGR_c_s[resGR_c_s$padj > 0.1,]
+resPP_c_s_noDE <- resPP_c_s[resPP_c_s$padj > 0.1,]
 
 #dimensions check
 dim(resSA_c_s_sig)[1]
@@ -536,14 +536,14 @@ dim(resPP_c_s_noDE)[1]
 
 #wrote the DE genes to files:
 #comment out when run:
-write.csv(resSA_c_s_sig, "resSA_c_s_sig_18_05_23.csv")
-write.csv(resBD_c_s_sig, "resBD_c_s_sig_18_05_23.csv")
-write.csv(resGR_c_s_sig, "resGR_c_s_sig_18_05_23.csv")
-write.csv(resPP_c_s_sig, "resPP_c_s_sig_18_05_23.csv")
-write.csv(resSA_c_s_noDE, "resSA_c_s_noDE_18_05_23.csv")
-write.csv(resBD_c_s_noDE, "resBD_c_s_noDE_18_05_23.csv")
-write.csv(resGR_c_s_noDE, "resGR_c_s_noDE_18_05_23.csv")
-write.csv(resPP_c_s_noDE, "resPP_c_s_noDE_18_05_23.csv")
+write.csv(resSA_c_s_sig, "LS_resSA_c_s_sig_17_07_24.csv")
+write.csv(resBD_c_s_sig, "LS_resBD_c_s_sig_17_07_24.csv")
+write.csv(resGR_c_s_sig, "LS_resGR_c_s_sig_17_07_24.csv")
+write.csv(resPP_c_s_sig, "LS_resPP_c_s_sig_17_07_24.csv")
+write.csv(resSA_c_s_noDE, "LS_resSA_c_s_noDE_17_07_24.csv")
+write.csv(resBD_c_s_noDE, "LS_resBD_c_s_noDE_17_07_24.csv")
+write.csv(resGR_c_s_noDE, "LS_resGR_c_s_noDE_17_07_24.csv")
+write.csv(resPP_c_s_noDE, "LS_resPP_c_s_noDE_17_07_24.csv")
 
 ################################################################################-
 ##4.4 Zinc experiment zdds1 results analysis (zinc population comparisons) ----
@@ -551,16 +551,16 @@ write.csv(resPP_c_s_noDE, "resPP_c_s_noDE_18_05_23.csv")
 
 #### C vs C and S vs S contrast denominator is the coast  - see how mine changes relative to this 
 #1. GR/SA in control
-resZ_GR_SA_C <- results(DEzdds1, contrast=c("Pop_treat", "GR_C", "SA_C"), alpha = 0.05)
+resZ_GR_SA_C <- results(DEzdds1, contrast=c("Pop_treat", "GR_C", "SA_C"), alpha = 0.1)
 resZ_GR_SA_C$Names <- row.names(resZ_GR_SA_C)
 #2. PP vs BD in control
-resZ_PP_BD_C <- results(DEzdds1, contrast=c("Pop_treat", "PP_C", "BD_C"),  alpha = 0.05)
+resZ_PP_BD_C <- results(DEzdds1, contrast=c("Pop_treat", "PP_C", "BD_C"),  alpha = 0.1)
 resZ_PP_BD_C$Names <- row.names(resZ_PP_BD_C)
 #3. GR vs SA in zinc
-resZ_GR_SA_Z <- results(DEzdds1, contrast=c("Pop_treat", "GR_Z", "SA_Z"),  alpha = 0.05)
+resZ_GR_SA_Z <- results(DEzdds1, contrast=c("Pop_treat", "GR_Z", "SA_Z"),  alpha = 0.1)
 resZ_GR_SA_Z$Names <- row.names(resZ_GR_SA_Z)
 #4. PP vs BD in zinc
-resZ_PP_BD_Z <- results(DEzdds1, contrast=c("Pop_treat", "PP_Z", "BD_Z"),  alpha = 0.05)
+resZ_PP_BD_Z <- results(DEzdds1, contrast=c("Pop_treat", "PP_Z", "BD_Z"),  alpha = 0.1)
 resZ_PP_BD_Z$Names <- row.names(resZ_PP_BD_Z)
 
 #check dimensions
@@ -588,11 +588,11 @@ dim(resZ_PP_BD_C)[1]
 dim(resZ_GR_SA_Z)[1]
 dim(resZ_PP_BD_Z)[1]
 
-#Significantly different genes: Adjusted p-value < 0.05. 
-resZ_GR_SA_C_sig <- resZ_GR_SA_C[resZ_GR_SA_C$padj < 0.05,]
-resZ_PP_BD_C_sig <- resZ_PP_BD_C[resZ_PP_BD_C$padj < 0.05,]
-resZ_GR_SA_Z_sig <- resZ_GR_SA_Z[resZ_GR_SA_Z$padj < 0.05,]
-resZ_PP_BD_Z_sig <- resZ_PP_BD_Z[resZ_PP_BD_Z$padj < 0.05,]
+#Significantly different genes: Adjusted p-value < 0.1. 
+resZ_GR_SA_C_sig <- resZ_GR_SA_C[resZ_GR_SA_C$padj < 0.1,]
+resZ_PP_BD_C_sig <- resZ_PP_BD_C[resZ_PP_BD_C$padj < 0.1,]
+resZ_GR_SA_Z_sig <- resZ_GR_SA_Z[resZ_GR_SA_Z$padj < 0.1,]
+resZ_PP_BD_Z_sig <- resZ_PP_BD_Z[resZ_PP_BD_Z$padj < 0.1,]
 
 #check dimensions
 dim(resZ_GR_SA_C_sig)[1]
@@ -600,11 +600,11 @@ dim(resZ_PP_BD_C_sig)[1]
 dim(resZ_GR_SA_Z_sig)[1]
 dim(resZ_PP_BD_Z_sig)[1]
 
-#not DE sig genes: Adjusted p-value > 0.05. 
-resZ_GR_SA_C_noDE <- resZ_GR_SA_C[resZ_GR_SA_C$padj > 0.05,]
-resZ_PP_BD_C_noDE <- resZ_PP_BD_C[resZ_PP_BD_C$padj > 0.05,]
-resZ_GR_SA_Z_noDE <- resZ_GR_SA_Z[resZ_GR_SA_Z$padj > 0.05,]
-resZ_PP_BD_Z_noDE <- resZ_PP_BD_Z[resZ_PP_BD_Z$padj > 0.05,]
+#not DE sig genes: Adjusted p-value > 0.1. 
+resZ_GR_SA_C_noDE <- resZ_GR_SA_C[resZ_GR_SA_C$padj > 0.1,]
+resZ_PP_BD_C_noDE <- resZ_PP_BD_C[resZ_PP_BD_C$padj > 0.1,]
+resZ_GR_SA_Z_noDE <- resZ_GR_SA_Z[resZ_GR_SA_Z$padj > 0.1,]
+resZ_PP_BD_Z_noDE <- resZ_PP_BD_Z[resZ_PP_BD_Z$padj > 0.1,]
 
 #check dimensions
 dim(resZ_GR_SA_C_noDE)[1]
@@ -613,27 +613,27 @@ dim(resZ_GR_SA_Z_noDE)[1]
 dim(resZ_PP_BD_Z_noDE)[1]
 
 # #write to files:
-write.csv(resZ_GR_SA_C_sig, "resZ_GR_SA_C_sig_18_05_23.csv")
-write.csv(resZ_PP_BD_C_sig, "resZ_PP_BD_C_sig_18_05_23.csv")
-write.csv(resZ_GR_SA_Z_sig, "resZ_GR_SA_Z_sig_18_05_23.csv")
-write.csv(resZ_PP_BD_Z_sig, "resZ_PP_BD_Z_sig_18_05_23.csv")
+write.csv(resZ_GR_SA_C_sig, "LS_resZ_GR_SA_C_sig_17_07_24.csv")
+write.csv(resZ_PP_BD_C_sig, "LS_resZ_PP_BD_C_sig_17_07_24.csv")
+write.csv(resZ_GR_SA_Z_sig, "LS_resZ_GR_SA_Z_sig_17_07_24.csv")
+write.csv(resZ_PP_BD_Z_sig, "LS_resZ_PP_BD_Z_sig_17_07_24.csv")
 
-write.csv(resZ_GR_SA_C_noDE, "resZ_GR_SA_C_noDE_18_05_23.csv")
-write.csv(resZ_PP_BD_C_noDE, "resZ_PP_BD_C_noDE_18_05_23.csv")
-write.csv(resZ_GR_SA_Z_noDE, "resZ_GR_SA_Z_noDE_18_05_23.csv")
-write.csv(resZ_PP_BD_Z_noDE, "resZ_PP_BD_Z_noDE_18_05_23.csv")
+write.csv(resZ_GR_SA_C_noDE, "LS_resZ_GR_SA_C_noDE_17_07_24.csv")
+write.csv(resZ_PP_BD_C_noDE, "LS_resZ_PP_BD_C_noDE_17_07_24.csv")
+write.csv(resZ_GR_SA_Z_noDE, "LS_resZ_GR_SA_Z_noDE_17_07_24.csv")
+write.csv(resZ_PP_BD_Z_noDE, "LS_resZ_PP_BD_Z_noDE_17_07_24.csv")
 
 ################################################################################-
 ##4.5 Zinc experiment zdds2 results analysis (Zinc plasticity) ----
 ################################################################################-
 
-resSA_c_z <- results(DEzdds2, contrast = list("PopulationSA.TreatmentZ"), alpha = 0.05)
+resSA_c_z <- results(DEzdds2, contrast = list("PopulationSA.TreatmentZ"), alpha = 0.1)
 resSA_c_z$Names <- rownames(resSA_c_z)
-resBD_c_z <- results(DEzdds2, contrast = list("PopulationBD.TreatmentZ"), alpha = 0.05)
+resBD_c_z <- results(DEzdds2, contrast = list("PopulationBD.TreatmentZ"), alpha = 0.1)
 resBD_c_z$Names <- rownames(resBD_c_z)
-resGR_c_z <- results(DEzdds2, contrast = list("PopulationGR.TreatmentZ"), alpha = 0.05)
+resGR_c_z <- results(DEzdds2, contrast = list("PopulationGR.TreatmentZ"), alpha = 0.1)
 resGR_c_z$Names <- rownames(resGR_c_z)
-resPP_c_z <- results(DEzdds2, contrast = list("PopulationPP.TreatmentZ"), alpha = 0.05)
+resPP_c_z <- results(DEzdds2, contrast = list("PopulationPP.TreatmentZ"), alpha = 0.1)
 resPP_c_z$Names <- rownames(resPP_c_z)
 
 #Summary of the results:
@@ -650,10 +650,10 @@ dim(resGR_c_z)[1]
 dim(resPP_c_z)[1]
 
 #write out the files of all the results for Pst analysis later:
-write.csv(resSA_c_z, "resSA_c_z_10_07_24.csv")
-write.csv(resBD_c_z, "resBD_c_z_10_07_24.csv")
-write.csv(resGR_c_z, "resGR_c_z_10_07_24.csv")
-write.csv(resPP_c_z, "resPP_c_z_10_07_24.csv")
+write.csv(resSA_c_z, "LS_resSA_c_z_10_07_24.csv")
+write.csv(resBD_c_z, "LS_resBD_c_z_10_07_24.csv")
+write.csv(resGR_c_z, "LS_resGR_c_z_10_07_24.csv")
+write.csv(resPP_c_z, "LS_resPP_c_z_10_07_24.csv")
 
 #remove any NAs by taking only non NA data entries
 resSA_c_z <- resSA_c_z[is.na(resSA_c_z$padj) == FALSE,]
@@ -667,11 +667,11 @@ dim(resBD_c_z)[1]
 dim(resGR_c_z)[1]
 dim(resPP_c_z)[1]
 
-#filter p values for < 0.05 sig DE
-resSA_c_z_sig <- resSA_c_z[resSA_c_z$padj < 0.05,]
-resBD_c_z_sig <- resBD_c_z[resBD_c_z$padj < 0.05,]
-resGR_c_z_sig <- resGR_c_z[resGR_c_z$padj < 0.05,]
-resPP_c_z_sig <- resPP_c_z[resPP_c_z$padj < 0.05,]
+#filter p values for < 0.1 sig DE
+resSA_c_z_sig <- resSA_c_z[resSA_c_z$padj < 0.1,]
+resBD_c_z_sig <- resBD_c_z[resBD_c_z$padj < 0.1,]
+resGR_c_z_sig <- resGR_c_z[resGR_c_z$padj < 0.1,]
+resPP_c_z_sig <- resPP_c_z[resPP_c_z$padj < 0.1,]
 
 #check dimensions
 dim(resSA_c_z_sig)[1]
@@ -679,11 +679,11 @@ dim(resBD_c_z_sig)[1]
 dim(resGR_c_z_sig)[1]
 dim(resPP_c_z_sig)[1]
 
-#filter p values for those > 0.05 no sig DE
-resSA_c_z_noDE <- resSA_c_z[resSA_c_z$padj > 0.05,]
-resBD_c_z_noDE <- resBD_c_z[resBD_c_z$padj > 0.05,]
-resGR_c_z_noDE <- resGR_c_z[resGR_c_z$padj > 0.05,]
-resPP_c_z_noDE <- resPP_c_z[resPP_c_z$padj > 0.05,]
+#filter p values for those > 0.1 no sig DE
+resSA_c_z_noDE <- resSA_c_z[resSA_c_z$padj > 0.1,]
+resBD_c_z_noDE <- resBD_c_z[resBD_c_z$padj > 0.1,]
+resGR_c_z_noDE <- resGR_c_z[resGR_c_z$padj > 0.1,]
+resPP_c_z_noDE <- resPP_c_z[resPP_c_z$padj > 0.1,]
 
 #check dimensions
 dim(resSA_c_z_noDE)[1]
@@ -692,34 +692,36 @@ dim(resGR_c_z_noDE)[1]
 dim(resPP_c_z_noDE)[1]
 
 #write the results out
-write.csv(resSA_c_z_sig, "resSA_c_z_sig_18_05_23.csv")
-write.csv(resBD_c_z_sig, "resBD_c_z_sig_18_05_23.csv")
-write.csv(resGR_c_z_sig, "resGR_c_z_sig_18_05_23.csv")
-write.csv(resPP_c_z_sig, "resPP_c_z_sig_18_05_23.csv")
+write.csv(resSA_c_z_sig, "LS_resSA_c_z_sig_17_07_24.csv")
+write.csv(resBD_c_z_sig, "LS_resBD_c_z_sig_17_07_24.csv")
+write.csv(resGR_c_z_sig, "LS_resGR_c_z_sig_17_07_24.csv")
+write.csv(resPP_c_z_sig, "LS_resPP_c_z_sig_17_07_24.csv")
 
-write.csv(resSA_c_z_noDE, "resSA_c_z_noDE_18_05_23.csv")
-write.csv(resBD_c_z_noDE, "resBD_c_z_noDE_18_05_23.csv")
-write.csv(resGR_c_z_noDE, "resGR_c_z_noDE_18_05_23.csv")
-write.csv(resPP_c_z_noDE, "resPP_c_z_noDE_18_05_23.csv")
+write.csv(resSA_c_z_noDE, "LS_resSA_c_z_noDE_17_07_24.csv")
+write.csv(resBD_c_z_noDE, "LS_resBD_c_z_noDE_17_07_24.csv")
+write.csv(resGR_c_z_noDE, "LS_resGR_c_z_noDE_17_07_24.csv")
+write.csv(resPP_c_z_noDE, "LS_resPP_c_z_noDE_17_07_24.csv")
 
 
 ############################################################################-
 #5. getting shrunken log fold change estimates for groups of interest ----
 ############################################################################-
 
+#didn't need these in the end.
+
 #salt experiment coastal and mine population salt plasticity:
 
 #estimate LFCs with LFCshrink:
-# lfcSA_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationSA.TreatmentS"), type = "ashr", alpha = 0.05)
+# lfcSA_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationSA.TreatmentS"), type = "ashr", alpha = 0.1)
 # lfcSA_c_s$Names <- rownames(lfcSA_c_s)
 # head(lfcSA_c_s)
-# lfcBD_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationBD.TreatmentS"), type = "ashr", alpha = 0.05)
+# lfcBD_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationBD.TreatmentS"), type = "ashr", alpha = 0.1)
 # lfcBD_c_s$Names <- rownames(lfcBD_c_s)
 # head(lfcBD_c_s)
-# lfcGR_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationGR.TreatmentS"), type = "ashr", alpha = 0.05)
+# lfcGR_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationGR.TreatmentS"), type = "ashr", alpha = 0.1)
 # lfcGR_c_s$Names <- rownames(lfcGR_c_s)
 # head(lfcGR_c_s)
-# lfcPP_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationPP.TreatmentS"), type = "ashr", alpha = 0.05)
+# lfcPP_c_s <- lfcShrink(DEsdds2, contrast = list("PopulationPP.TreatmentS"), type = "ashr", alpha = 0.1)
 # lfcPP_c_s$Names <- rownames(lfcPP_c_s)
 # head(lfcPP_c_s)
 # 
@@ -733,11 +735,11 @@ write.csv(resPP_c_z_noDE, "resPP_c_z_noDE_18_05_23.csv")
 # lfcSA_c_s <- lfcSA_c_s[is.na(lfcSA_c_s$padj) == FALSE,]
 # lfcSA_c_s <- lfcSA_c_s[is.na(lfcSA_c_s$padj) == FALSE,]
 # 
-# #filter to remove those with p adj. below 0.05
-# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.05,]
-# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.05,]
-# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.05,]
-# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.05,]
+# #filter to remove those with p adj. below 0.1
+# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.1,]
+# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.1,]
+# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.1,]
+# lfcSA_c_s_sig <- lfcSA_c_s[lfcSA_c_s$padj < 0.1,]
 #
 #export results
 # write.csv(lfcSA_c_s, "lfcSA_c_s_sig_20_06_23.csv")
@@ -746,7 +748,7 @@ write.csv(resPP_c_z_noDE, "resPP_c_z_noDE_18_05_23.csv")
 # write.csv(lfcPP_c_s, "lfcPP_c_s_sig_20_06_23.csv")
 #
 #
-#write.csv(lfcSA_c_s_sig, "lfcSA_c_s_sig_20_06_23.csv")
+#write.csv(lfcSA_c_s_sig, "LS_lfcSA_c_s_sig_20_06_23.csv")
 
 
 ###########################################################################-
@@ -797,7 +799,6 @@ pca_data_allvst1_controls_34 <- plotPCA.san(allvst1_controls, intgroup = c("Ecot
 allvst1percentVar_C_34 <- round(100 * attr(pca_data_allvst1_controls_34, "percentVar"))
 
 
-
 ###################################-
 ##6.3 plot PCAs ----
 ###################################-
@@ -817,28 +818,28 @@ allvst1percentVar_C_34 <- round(100 * attr(pca_data_allvst1_controls_34, "percen
 #       legend.text = element_text(size = 18), legend.title = element_text(size = 20),
 #       aspect.ratio = 1)
 #PCA_allvst1_all
-
-# #plot graph of PCA 1 and 2 for all controls
-PCA_allvst1_C <- ggplot(pca_data_allvst1_controls, aes(PC1, PC2, shape=Treatment, 
-                                                       color=Location, 
-                                                       fill=Ecotype,
-                                                        label=name)) +
-  geom_point(size = 7, stroke = 1) +
-  #geom_text(check_overlap = F, size = 2)+
-  xlab(paste0("PC1:", allvst1percentVar_C[1], "% variance")) +
-  ylab(paste0("PC2:", allvst1percentVar_C[2], "% variance")) +
-  scale_shape_manual(values= c(21, 23)) +
-  scale_fill_manual(values = c(col_coast, col_mine), guide = 'none') +
-  scale_color_manual(values = c(col_PPBD,  col_GRSA), guide = "none") +
-  coord_fixed() +
-  #theme(legend.position = "none")+
-  theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
-        axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 18), axis.text = element_text(size = 18),
-        legend.text = element_text(size = 18), legend.title = element_text(size = 22),
-        aspect.ratio = 1)
-PCA_allvst1_C
-
-
+#
+# # #plot graph of PCA 1 and 2 for all controls
+# PCA_allvst1_C <- ggplot(pca_data_allvst1_controls, aes(PC1, PC2, shape=Treatment, 
+#                                                        color=Location, 
+#                                                        fill=Ecotype,
+#                                                         label=name)) +
+#   geom_point(size = 7, stroke = 1) +
+#   #geom_text(check_overlap = F, size = 2)+
+#   xlab(paste0("PC1:", allvst1percentVar_C[1], "% variance")) +
+#   ylab(paste0("PC2:", allvst1percentVar_C[2], "% variance")) +
+#   scale_shape_manual(values= c(21, 23)) +
+#   scale_fill_manual(values = c(col_coast, col_mine), guide = 'none') +
+#   scale_color_manual(values = c(col_PPBD,  col_GRSA), guide = "none") +
+#   coord_fixed() +
+#   #theme(legend.position = "none")+
+#   theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
+#         axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 18), axis.text = element_text(size = 18),
+#         legend.text = element_text(size = 18), legend.title = element_text(size = 22),
+#         aspect.ratio = 1)
+# PCA_allvst1_C
+#
+#
 #axes 3 and 4. need to plot 3 against 1 ideally for extra info.
 # PCA_allvst1_C_34 <- ggplot(pca_data_allvst1_controls_34, aes(PC3, PC4, shape=Treatment, color=Location, fill=Ecotype)) +
 #   geom_point(size = 7, stroke = 1) +
@@ -854,37 +855,37 @@ PCA_allvst1_C
 #         legend.text = element_text(size = 18), legend.title = element_text(size = 22),
 #         aspect.ratio = 1)
 # PCA_allvst1_C_34
-
-PCA_allvst1_T <- ggplot(pca_data_allvst1_treatments, aes(PC1, PC2, shape=Treatment, color=Location, fill=Ecotype)) +
-  geom_point(size = 7, stroke = 1) +
-  xlab(paste0("PC1:", allvst1percentVar_T[1], "% variance")) +
-  ylab(paste0("PC2:", allvst1percentVar_T[2], "% variance")) +
-  scale_shape_manual(values= c(22, 24)) +
-  scale_fill_manual(values = c(col_coast, col_mine), guide = 'none') +
-  scale_color_manual(values = c(col_PPBD,  col_GRSA), guide = "none") +
-  coord_fixed() +
-  #theme(legend.position = "none")+
-  theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
-        axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 18), axis.text = element_text(size = 18),
-        legend.text = element_text(size = 18), legend.title = element_text(size = 22),
-        aspect.ratio = 1)
-PCA_allvst1_T
-
-PCA_svst1 <- ggplot(pca_data_svst1, aes(PC1, PC2, shape=Treatment, color=Location, fill=Ecotype)) +
-  geom_point(size = 7, stroke = 1) +
-  xlab(paste0("PC1:", svst1percentVar_all[1], "% variance")) +
-  ylab(paste0("PC2:", svst1percentVar_all[2], "% variance")) +
-  scale_shape_manual(values= c(21, 22)) +
-  scale_fill_manual(values = c(col_coast, col_mine), guide = 'none') +
-  scale_color_manual(values = c(col_PPBD,  col_GRSA), guide = "none") +
-  coord_fixed() +
-  theme(legend.position = "none")+
-  theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
-        axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 22), axis.text = element_text(size = 18),
-        legend.text = element_text(size = 18), legend.title = element_text(size = 22),
-        aspect.ratio = 1)
-PCA_svst1
-
+# 
+# PCA_allvst1_T <- ggplot(pca_data_allvst1_treatments, aes(PC1, PC2, shape=Treatment, color=Location, fill=Ecotype)) +
+#   geom_point(size = 7, stroke = 1) +
+#   xlab(paste0("PC1:", allvst1percentVar_T[1], "% variance")) +
+#   ylab(paste0("PC2:", allvst1percentVar_T[2], "% variance")) +
+#   scale_shape_manual(values= c(22, 24)) +
+#   scale_fill_manual(values = c(col_coast, col_mine), guide = 'none') +
+#   scale_color_manual(values = c(col_PPBD,  col_GRSA), guide = "none") +
+#   coord_fixed() +
+#   #theme(legend.position = "none")+
+#   theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
+#         axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 18), axis.text = element_text(size = 18),
+#         legend.text = element_text(size = 18), legend.title = element_text(size = 22),
+#         aspect.ratio = 1)
+# PCA_allvst1_T
+# 
+# PCA_svst1 <- ggplot(pca_data_svst1, aes(PC1, PC2, shape=Treatment, color=Location, fill=Ecotype)) +
+#   geom_point(size = 7, stroke = 1) +
+#   xlab(paste0("PC1:", svst1percentVar_all[1], "% variance")) +
+#   ylab(paste0("PC2:", svst1percentVar_all[2], "% variance")) +
+#   scale_shape_manual(values= c(21, 22)) +
+#   scale_fill_manual(values = c(col_coast, col_mine), guide = 'none') +
+#   scale_color_manual(values = c(col_PPBD,  col_GRSA), guide = "none") +
+#   coord_fixed() +
+#   theme(legend.position = "none")+
+#   theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
+#         axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 22), axis.text = element_text(size = 18),
+#         legend.text = element_text(size = 18), legend.title = element_text(size = 22),
+#         aspect.ratio = 1)
+# PCA_svst1
+#
 # PCA_zvst1 <- ggplot(pca_data_zvst1, aes(PC1, PC2, shape=Treatment, color=Location, fill=Ecotype)) +
 #   geom_point(size = 5, stroke = 1) +
 #   xlab(paste0("PC1:", zvst1percentVar_all[1], "% variance")) +
@@ -896,7 +897,7 @@ PCA_svst1
 #   theme(legend.position = "none")+
 #   theme(panel.border = element_rect(colour = "black", fill = NA, size = 2), panel.background = element_blank(), aspect.ratio = 1, axis.title = element_text(size = 22), axis.text = element_text(size = 15))
 # PCA_zvst1
-
+#
 ####export the PCAs to PDF format:
 # 
 # #all PCA 
@@ -907,7 +908,7 @@ PCA_svst1
 # pdf(file = "PCA_allvst1_C_18_05_23.pdf")
 # PCA_allvst1_C
 # dev.off()
-
+#
 # pdf(file = "PCA_allvst1_C_27_02_24.pdf")
 # PCA_allvst1_C
 # dev.off()
@@ -919,9 +920,9 @@ PCA_svst1
 # pdf(file = "PCA_svst1_27_02_24.pdf")
 # PCA_svst1
 # dev.off()
-
-setFplot_page(page = "a4", margins = "normal", units = "tw", pt = 20, reset = FALSE, w2h = 1)
-
+#
+#setFplot_page(page = "a4", margins = "normal", units = "tw", pt = 20, reset = FALSE, w2h = 1)
+#
 # pdf_fit(file = "PCA_svst1_27_02_24_v3.pdf", pt =20, width = 1.15, w2h = 1)
 # PCA_svst1
 # fit.off()
@@ -929,7 +930,7 @@ setFplot_page(page = "a4", margins = "normal", units = "tw", pt = 20, reset = FA
 # pdf_fit(file = "PCA_svst1_27_02_24_v3.pdf", pt =20, width = 1.15, w2h = 1)
 # PCA_svst1
 # fit.off()
-
+#
 # #zinc exp only
 # pdf(file = "PCA_zvst1_18_05_23.pdf")
 # PCA_zvst1
@@ -950,8 +951,8 @@ str(alldds1_norm_counts)
 hist(rowSums((alldds1_norm_counts)), breaks = 5000, xlim = c(0,20000))
 
 #30178 genes are filtered in both and common across both comparisons
-#write to a file:
-write.csv(alldds1_norm_counts, "alldds1_norm_counts_18_05_23.csv")
+#write to a file: (same file as in previous script)
+#write.csv(alldds1_norm_counts, "alldds1_norm_counts_18_05_23.csv")
 # 
 # #####
 # #7.0checking some genes for counts ----
@@ -960,6 +961,8 @@ write.csv(alldds1_norm_counts, "alldds1_norm_counts_18_05_23.csv")
 # plotCounts(alldds1, gene = "evm.TU.s_49.16", intgroup = "Pop_treat")
 # 
 # #evm.TU.s_49.16
+
+plotCounts(alldds1, gene = "evm.TU.s_419.6", intgroup = "Pop_treat")
 
 
 

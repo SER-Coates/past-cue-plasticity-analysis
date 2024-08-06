@@ -1,7 +1,7 @@
 #########################################################################################-
 #############                         SARAH COATES                            ###########-
 #############           Analysis 2 of DEseq2 significantly DE loci            ###########-
-#############                     Salt and zinc analysis       v6               ###########-
+#############                     Salt and zinc analysis       low stringency              ###########-
 #############                                                                 ###########-
 #########################################################################################-
 
@@ -11,6 +11,7 @@
 
 #clear workspace
 remove(list=ls())
+
 #set working directory if needed
 #setwd()
 
@@ -40,7 +41,6 @@ library(ggsci)
 library(viridis)
 library(rcartocolor)
 library(pdftools)
-library(ggpubr)
 
 #load ggh4x package for strip editing ability in facet wrap.
 library(ggh4x)
@@ -164,71 +164,71 @@ dds1_all_norm_counts <- setDT(read.csv("R_input_files/alldds1_norm_counts_18_05_
 rownames(dds1_all_norm_counts) <- dds1_all_norm_counts$X
 
 #control1-2 comparison across experiments (as output from previous script step 1)
-SA_C1_2_no_DE <- setDT(read.csv("R_input_files/SA_C1_2_no_DE_18_05_23.csv"))
-BD_C1_2_no_DE <- setDT(read.csv("R_input_files/BD_C1_2_no_DE_18_05_23.csv"))
-GR_C1_2_no_DE <- setDT(read.csv("R_input_files/GR_C1_2_no_DE_18_05_23.csv"))
-PP_C1_2_no_DE <- setDT(read.csv("R_input_files/PP_C1_2_no_DE_18_05_23.csv"))
+SA_C1_2_no_DE <- setDT(read.csv("R_input_files/LS_SA_C1_2_no_DE_17_07_24.csv"))
+BD_C1_2_no_DE <- setDT(read.csv("R_input_files/LS_BD_C1_2_no_DE_17_07_24.csv"))
+GR_C1_2_no_DE <- setDT(read.csv("R_input_files/LS_GR_C1_2_no_DE_17_07_24.csv"))
+PP_C1_2_no_DE <- setDT(read.csv("R_input_files/LS_PP_C1_2_no_DE_17_07_24.csv"))
 
 #SZ comparisons between both data
-res_SZgrsa_no_DE <- setDT(read.csv("R_input_files/res_SZ_grsa_no_DE_18_05_23.csv"))
-res_SZppbd_no_DE <- setDT(read.csv("R_input_files/res_SZ_ppbd_no_DE_18_05_23.csv"))
-res_SZsa_no_DE <- setDT(read.csv("R_input_files/res_sa_SZ_no_DE_18_05_23.csv"))
-res_SZbd_no_DE <- setDT(read.csv("R_input_files/res_bd_SZ_no_DE_18_05_23.csv"))
-res_SZgr_no_DE <- setDT(read.csv("R_input_files/res_gr_SZ_no_DE_18_05_23.csv"))
-res_SZpp_no_DE <- setDT(read.csv("R_input_files/res_pp_SZ_no_DE_18_05_23.csv"))
+res_SZgrsa_no_DE <- setDT(read.csv("R_input_files/LS_res_SZ_grsa_no_DE_17_07_24.csv"))
+res_SZppbd_no_DE <- setDT(read.csv("R_input_files/LS_res_SZ_ppbd_no_DE_17_07_24.csv"))
+res_SZsa_no_DE <- setDT(read.csv("R_input_files/LS_res_sa_SZ_no_DE_17_07_24.csv"))
+res_SZbd_no_DE <- setDT(read.csv("R_input_files/LS_res_bd_SZ_no_DE_17_07_24.csv"))
+res_SZgr_no_DE <- setDT(read.csv("R_input_files/LS_res_gr_SZ_no_DE_17_07_24.csv"))
+res_SZpp_no_DE <- setDT(read.csv("R_input_files/LS_res_pp_SZ_no_DE_17_07_24.csv"))
 #significant DE:
-res_SZgrsa_sig <- setDT(read.csv("R_input_files/res_SZ_grsa_sig_18_05_23.csv"))
-res_SZppbd_sig <- setDT(read.csv("R_input_files/res_SZ_ppbd_sig_18_05_23.csv"))
-res_SZsa_sig <- setDT(read.csv("R_input_files/res_sa_SZ_sig_18_05_23.csv"))
-res_SZbd_sig <- setDT(read.csv("R_input_files/res_bd_SZ_sig_18_05_23.csv"))
-res_SZgr_sig <- setDT(read.csv("R_input_files/res_gr_SZ_sig_18_05_23.csv"))
-res_SZpp_sig <- setDT(read.csv("R_input_files/res_pp_SZ_sig_18_05_23.csv"))
+res_SZgrsa_sig <- setDT(read.csv("R_input_files/LS_res_SZ_grsa_sig_17_07_24.csv"))
+res_SZppbd_sig <- setDT(read.csv("R_input_files/LS_res_SZ_ppbd_sig_17_07_24.csv"))
+res_SZsa_sig <- setDT(read.csv("R_input_files/LS_res_sa_SZ_sig_17_07_24.csv"))
+res_SZbd_sig <- setDT(read.csv("R_input_files/LS_res_bd_SZ_sig_17_07_24.csv"))
+res_SZgr_sig <- setDT(read.csv("R_input_files/LS_res_gr_SZ_sig_17_07_24.csv"))
+res_SZpp_sig <- setDT(read.csv("R_input_files/LS_res_pp_SZ_sig_17_07_24.csv"))
 
 ##1.2 load salt experiment results ----
 
 # significant results salt exp DE between population pairs within treatments:
-resGR_SA_C_sig <- setDT(read.csv("R_input_files/resGR_SA_C_sig_18_05_23.csv", sep = ","))
-resPP_BD_C_sig <- setDT(read.csv("R_input_files/resPP_BD_C_sig_18_05_23.csv", sep = ","))
-resGR_SA_S_sig <- setDT(read.csv("R_input_files/resGR_SA_S_sig_18_05_23.csv", sep = ","))
-resPP_BD_S_sig <- setDT(read.csv("R_input_files/resPP_BD_S_sig_18_05_23.csv", sep = ","))
+resGR_SA_C_sig <- setDT(read.csv("R_input_files/LS_resGR_SA_C_sig_17_07_24.csv", sep = ","))
+resPP_BD_C_sig <- setDT(read.csv("R_input_files/LS_resPP_BD_C_sig_17_07_24.csv", sep = ","))
+resGR_SA_S_sig <- setDT(read.csv("R_input_files/LS_resGR_SA_S_sig_17_07_24.csv", sep = ","))
+resPP_BD_S_sig <- setDT(read.csv("R_input_files/LS_resPP_BD_S_sig_17_07_24.csv", sep = ","))
 
 #non-significant results salt exp between pop pairs - only import if needed
 
 #significant results salt exp within population comparisons between treatments:
-resSA_c_s_sig <- setDT(read.csv("R_input_files/resSA_c_s_sig_18_05_23.csv", sep = ","))
-resBD_c_s_sig <- setDT(read.csv("R_input_files/resBD_c_s_sig_18_05_23.csv", sep = ","))
-resGR_c_s_sig <- setDT(read.csv("R_input_files/resGR_c_s_sig_18_05_23.csv", sep = ","))
-resPP_c_s_sig <- setDT(read.csv("R_input_files/resPP_c_s_sig_18_05_23.csv", sep = ","))
+resSA_c_s_sig <- setDT(read.csv("R_input_files/LS_resSA_c_s_sig_17_07_24.csv", sep = ","))
+resBD_c_s_sig <- setDT(read.csv("R_input_files/LS_resBD_c_s_sig_17_07_24.csv", sep = ","))
+resGR_c_s_sig <- setDT(read.csv("R_input_files/LS_resGR_c_s_sig_17_07_24.csv", sep = ","))
+resPP_c_s_sig <- setDT(read.csv("R_input_files/LS_resPP_c_s_sig_17_07_24.csv", sep = ","))
 
 #no DE no response to salt.
-resSA_c_s_noDE <- setDT(read.csv("R_input_files/resSA_c_s_noDE_18_05_23.csv", sep = ","))
-resBD_c_s_noDE <- setDT(read.csv("R_input_files/resBD_c_s_noDE_18_05_23.csv", sep = ","))
-resGR_c_s_noDE <- setDT(read.csv("R_input_files/resGR_c_s_noDE_18_05_23.csv", sep = ","))
-resPP_c_s_noDE <- setDT(read.csv("R_input_files/resPP_c_s_noDE_18_05_23.csv", sep = ","))
+resSA_c_s_noDE <- setDT(read.csv("R_input_files/LS_resSA_c_s_noDE_17_07_24.csv", sep = ","))
+resBD_c_s_noDE <- setDT(read.csv("R_input_files/LS_resBD_c_s_noDE_17_07_24.csv", sep = ","))
+resGR_c_s_noDE <- setDT(read.csv("R_input_files/LS_resGR_c_s_noDE_17_07_24.csv", sep = ","))
+resPP_c_s_noDE <- setDT(read.csv("R_input_files/LS_resPP_c_s_noDE_17_07_24.csv", sep = ","))
 
 ##1.3 Add imports for zinc results ----
 
 #dds1:
-resZ_GR_SA_C_sig <- setDT(read.csv("R_input_files/resZ_GR_SA_C_sig_18_05_23.csv", sep = ","))
-resZ_PP_BD_C_sig <- setDT(read.csv("R_input_files/resZ_PP_BD_C_sig_18_05_23.csv", sep = ","))
-resZ_GR_SA_Z_sig <- setDT(read.csv("R_input_files/resZ_GR_SA_Z_sig_18_05_23.csv", sep = ","))
-resZ_PP_BD_Z_sig <- setDT(read.csv("R_input_files/resZ_PP_BD_Z_sig_18_05_23.csv", sep = ","))
+resZ_GR_SA_C_sig <- setDT(read.csv("R_input_files/LS_resZ_GR_SA_C_sig_17_07_24.csv", sep = ","))
+resZ_PP_BD_C_sig <- setDT(read.csv("R_input_files/LS_resZ_PP_BD_C_sig_17_07_24.csv", sep = ","))
+resZ_GR_SA_Z_sig <- setDT(read.csv("R_input_files/LS_resZ_GR_SA_Z_sig_17_07_24.csv", sep = ","))
+resZ_PP_BD_Z_sig <- setDT(read.csv("R_input_files/LS_resZ_PP_BD_Z_sig_17_07_24.csv", sep = ","))
 
 #non significant EC within zinc:
-resZ_GR_SA_Z_noDE <- setDT(read.csv("R_input_files/resZ_GR_SA_Z_noDE_18_05_23.csv", sep = ","))
-resZ_PP_BD_Z_noDE <- setDT(read.csv("R_input_files/resZ_PP_BD_Z_noDE_18_05_23.csv", sep = ","))
+resZ_GR_SA_Z_noDE <- setDT(read.csv("R_input_files/LS_resZ_GR_SA_Z_noDE_17_07_24.csv", sep = ","))
+resZ_PP_BD_Z_noDE <- setDT(read.csv("R_input_files/LS_resZ_PP_BD_Z_noDE_17_07_24.csv", sep = ","))
 
 #dds2 significant results zinc exp within population comparisons between treatments:
-resSA_c_z_sig <- setDT(read.csv("R_input_files/resSA_c_z_sig_18_05_23.csv", sep = ","))
-resBD_c_z_sig <- setDT(read.csv("R_input_files/resBD_c_z_sig_18_05_23.csv", sep = ","))
-resGR_c_z_sig <- setDT(read.csv("R_input_files/resGR_c_z_sig_18_05_23.csv", sep = ","))
-resPP_c_z_sig <- setDT(read.csv("R_input_files/resPP_c_z_sig_18_05_23.csv", sep = ","))
+resSA_c_z_sig <- setDT(read.csv("R_input_files/LS_resSA_c_z_sig_17_07_24.csv", sep = ","))
+resBD_c_z_sig <- setDT(read.csv("R_input_files/LS_resBD_c_z_sig_17_07_24.csv", sep = ","))
+resGR_c_z_sig <- setDT(read.csv("R_input_files/LS_resGR_c_z_sig_17_07_24.csv", sep = ","))
+resPP_c_z_sig <- setDT(read.csv("R_input_files/LS_resPP_c_z_sig_17_07_24.csv", sep = ","))
 
 #dds2 non-significant results zinc exp within population comparisons between treatments:
-resSA_c_z_noDE <- setDT(read.csv("R_input_files/resSA_c_z_noDE_18_05_23.csv", sep = ","))
-resBD_c_z_noDE <- setDT(read.csv("R_input_files/resBD_c_z_noDE_18_05_23.csv", sep = ","))
-resGR_c_z_noDE <- setDT(read.csv("R_input_files/resGR_c_z_noDE_18_05_23.csv", sep = ","))
-resPP_c_z_noDE <- setDT(read.csv("R_input_files/resPP_c_z_noDE_18_05_23.csv", sep = ","))
+resSA_c_z_noDE <- setDT(read.csv("R_input_files/LS_resSA_c_z_noDE_17_07_24.csv", sep = ","))
+resBD_c_z_noDE <- setDT(read.csv("R_input_files/LS_resBD_c_z_noDE_17_07_24.csv", sep = ","))
+resGR_c_z_noDE <- setDT(read.csv("R_input_files/LS_resGR_c_z_noDE_17_07_24.csv", sep = ","))
+resPP_c_z_noDE <- setDT(read.csv("R_input_files/LS_resPP_c_z_noDE_17_07_24.csv", sep = ","))
 
 ################################################################-
 #2.0 FORMAT RESULTS ready for downstream analysis ----
@@ -500,7 +500,7 @@ CC_min <- merge(CCgr_ns, CCpp_ns, by = "Names")
 #all 4 population pairs have no sig. DE in control:
 CC_all <- merge(CC_cst, CC_min, by = "Names") #control1-control2 set of genes
 CC_allNames <- CC_all$Names
-CC_all_count <- length(CC_allNames) #23903
+CC_all_count <- length(CC_allNames) #23903 #20781 - smaller here as more were significant.
 
 ##3.1 filter all results data by this gene set ----
 
@@ -670,13 +670,11 @@ ECC <- merge(EC1_same, EC2_same, by = "Names")
 dim(ECC)[1]
 ECC$signECC <- ECC$log2FoldChange_C1grsa_sig*ECC$log2FoldChange_C2ppbd_sig
 ECC_same <- ECC[ECC$signECC > 0,]
-ECC_same_count <- dim(ECC_same)[1] #124
+ECC_same_count <- dim(ECC_same)[1] #now 173
 
 ECC_same_up <- ECC_same[ECC_same$log2FoldChange_C1grsa_sig > 0,]
 ECC_same_down <- ECC_same[ECC_same$log2FoldChange_C1grsa_sig < 0,]
 dim(ECC_same_down)
-
-write.csv(ECC_same, "ECC_same_124_18_07_24.csv")
 
 ##4.3 evolutionary change in salt response if needed ----
 
@@ -717,12 +715,12 @@ ASP <- merge(CSsa_sig1, CSbd_sig1, by = "Names")
 dim(ASP)[1] #959
 ASP$signASP <- ASP$log2FoldChange_CSsa_sig*ASP$log2FoldChange_CSbd_sig
 ASP_same <- ASP[ASP$signASP > 0,]
-ASP_same_count <- dim(ASP_same)[1] #957
+ASP_same_count <- dim(ASP_same)[1] #now 1085
 
 #ASP upregulated and downregulated shared genes:
 
-ASP_up <- ASP_same[ASP_same$log2FoldChange_CSbd_sig > 0,]
-ASP_down <- ASP_same[ASP_same$log2FoldChange_CSbd_sig < 0,] 
+ASP_up <- ASP[ASP$log2FoldChange_CSbd_sig > 0,]
+ASP_down <- ASP[ASP$log2FoldChange_CSbd_sig < 0,] 
 
 dim(ASP_up)[1] #259
 dim(ASP_down)[1] #700
@@ -733,7 +731,7 @@ DSP <- merge(CSgr_sig1, CSpp_sig1, by = "Names")
 dim(DSP)[1] #156
 DSP$signDSP <- DSP$log2FoldChange_CSgr_sig*DSP$log2FoldChange_CSpp_sig
 DSP_same <- DSP[DSP$signDSP > 0,]
-DSP_same_count <- dim(DSP_same)[1] #155
+DSP_same_count <- dim(DSP_same)[1] #155 #186
 
 DSP_same_up <- DSP_same[DSP_same$log2FoldChange_CSgr_sig > 0,]
 DSP_same_down <- DSP_same[DSP_same$log2FoldChange_CSgr_sig < 0,]
@@ -754,15 +752,13 @@ AZP <- merge(CZsa_sig1, CZbd_sig1, by = "Names")
 dim(AZP)[1] #10998
 AZP$signAZP <- AZP$log2FoldChange_CZsa_sig*AZP$log2FoldChange_CZbd_sig
 AZP_same <- AZP[AZP$signAZP > 0,]
-AZP_same_count <- dim(AZP_same)[1] #10933
+AZP_same_count <- dim(AZP_same)[1] #now 10890
 
-AZP_up <- AZP_same[AZP_same$log2FoldChange_CZbd_sig > 0,]
-AZP_down <- AZP_same[AZP_same$log2FoldChange_CZbd_sig < 0,] 
+AZP_up <- AZP[AZP$log2FoldChange_CZbd_sig > 0,]
+AZP_down <- AZP[AZP$log2FoldChange_CZbd_sig < 0,] 
 
-dim(AZP_up)[1] #4948
-dim(AZP_down)[1] #5985
-
-AZP_diff <- AZP[AZP$signAZP < 0,] #65
+dim(AZP_up)[1] #4984 #5017 
+dim(AZP_down)[1] #6014 #5993
 
 ###5.3.1 extra set comparing AZP and ASP directions:
 
@@ -781,22 +777,18 @@ ASP_AZP_diff_downsalt <- ASP_AZP_diff[ASP_AZP_diff$log2FoldChange_CSsa_sig < 0,]
 ##5.4 Descendant (Mine) zinc plasticity ----
 
 DZP <- merge(CZgr_sig1, CZpp_sig1, by = "Names")
-dim(DZP)[1] #143
+dim(DZP)[1] #143 #now 191
 DZP$signDZP <- DZP$log2FoldChange_CZgr_sig*DZP$log2FoldChange_CZpp_sig
 DZP_same <- DZP[DZP$signDZP > 0,]
-DZP_same_count <- dim(DZP_same)[1] #143
+DZP_same_count <- dim(DZP_same)[1] #190 now
 
 DZP_same_up <- DZP_same[DZP_same$log2FoldChange_CZgr_sig > 0,]
 DZP_same_down <- DZP_same[DZP_same$log2FoldChange_CZgr_sig < 0,]
 
-write.csv(DZP_same, "DZP_same_143_18_07_24.csv")
-
 ###5.4.1 Derived zinc plasticity (DZP with ECZ) ----
 
 EDZP <- merge(DZP_same, ECZ_same, by = "Names")
-EDZP_count <- dim(EDZP)[1] #91
-
-write.csv(EDZP, "EDZP_91_18_07_24.csv")
+EDZP_count <- dim(EDZP)[1] #now 119
 
 # #unused, DZP same as evolution direction:
 #EDZP$signEDZP <- EDZP$log2FoldChange_CZgr_sig*EDZP$log2FoldChange_Zgrsa_sig
@@ -870,10 +862,12 @@ ASP_DZP_same <- ASP_DZP[ASP_DZP$signASPDZP > 0,] #35
 ASP_DZP_AZP <- merge(ASP_DZP_same, AZP_same, by = "Names") #20
 
 #subset for AZP same direction as ASP and DZP:
-ASP_DZP_AZP_same <- ASP_DZP_AZP[ASP_DZP_AZP$log2FoldChange_CZsa_sig*ASP_DZP_AZP$log2FoldChange_CSsa_sig > 0] #3 genes
+ASP_DZP_AZP_same <- ASP_DZP_AZP[ASP_DZP_AZP$log2FoldChange_CZsa_sig*ASP_DZP_AZP$log2FoldChange_CSsa_sig > 0]
 
 #subset those with same direction of DSP (strict pre-adaptive plasticity)
 ASP_DZP_AZP_DSP <- merge(ASP_DZP_AZP_same, DSP_same, by = "Names")
+
+dim(ASP_DZP_AZP_DSP)[1] #1 gene now in the group. 
 
 #0 genes with pre-adaptive plasticity in strict sense.
 
@@ -899,9 +893,9 @@ AZP_DZP_same <- AZP_DZP[AZP_DZP$log2FoldChange_CZsa_sig*AZP_DZP$log2FoldChange_C
 dim(AZP_DZP_same)[1] #57
 
 
-#########################################################################################-
+####################################################-
 #8.0 Genes showing Cue transfer pattern ----
-#########################################################################################-
+####################################################-
 
 #EC in zinc where genes are plastic - evolved descendent zinc plastic genes
 ASP_EDZP <- merge(ASP_same, EDZP, by = "Names")
@@ -925,35 +919,10 @@ dim(ASP_EDZP_SZcst_AZP_same)[1] #0 AZP in the same direction as ASP and DZP
 dim(ASP_EDZP_SZcst_AZP_diff)[1] #17 in the opposing direction
 
 #final set of cue transfer genes:
-ASP_EDZP_SZcst <- ASP_EDZP_SZcst[which(ASP_EDZP_SZcst$Names %notin% ASP_EDZP_SZcst_AZP_same$Names),] 
-
-#final number of genes with cue transfer = 28
-
-#write out the names of the set to a file/the output itself:
-#write.csv(ASP_EDZP_SZcst, "cue_transfer_02_08_24.csv")
-
-##8.1 sub patterns of harmonisation and plasticity switching ----
-#
-#where ASP, EDZP and EDSP are the same direction
-#
-#Harmonisation:
-# ASP_EDZP_SZcst_DSP <- merge(ASP_EDZP_SZcst, DSP_same, by = "Names") #13 genes of 28 
-# ASP_EDZP_SZcst_DSP$sign1 <- 
-#   ASP_EDZP_SZcst_DSP$log2FoldChange_CSsa_sig*
-#   ASP_EDZP_SZcst_DSP$log2FoldChange_CZgr_sig
-# 
-# #plasticity switch1:
-# ASP_EDZP_noDSP <- merge(ASP_EDZP_same, no_DSP, by = "Names") #6 genes out of 28
-# 
-# #plasticity switch2:
-# ASP_EDZP_SZcst_no_DSP <- merge(ASP_EDZP_SZcst, no_DSP, by = "Names") #5 genes of 28 
-# 
-# #plasticity switch 3 (also DE S vs Z in mines (SZmin)):
-# ASP_EDZP_SZcst_no_DSP_SZmin <- merge(ASP_EDZP_SZcst_no_DSP, SZmin, by = "Names") #0
+ASP_EDZP_SZcst <- ASP_EDZP_SZcst[which(ASP_EDZP_SZcst$Names %notin% ASP_EDZP_SZcst_AZP_same$Names),]
 
 ############################################################-
 ##8.3 checking ancestral zinc response transfer to descendent response for comparison ----
-
 ###########################################################-
 
 #AZP that has been modified during evolution:
@@ -961,6 +930,11 @@ AZP_EDZP <- merge(AZP_same, EDZP, by = "Names") #62 genes
 dim(AZP_EDZP)[1]
 AZP_EDZP_same <- AZP_EDZP[AZP_EDZP$log2FoldChange_CZsa_sig*AZP_EDZP$log2FoldChange_CZgr_sig > 0]
 dim(AZP_EDZP_same)[1] #28
+
+
+################################################################################################-
+#9.0 Co-opted genes (parallel salt plasticity adopted into mine adaptive expression) ----
+################################################################################################-
 
 ################################################################################################-
 #9.0 Co-opted genes (genetically adopted) (parallel salt plasticity adopted into mine adaptive expression) ----
@@ -988,39 +962,20 @@ dim(ASP_ECC_noDZP_SZcst_same)[1]
 dim(ASP_ECC_noDZP_SZcst_diff)[1]
 
 ASP_ECC_noDZP_SZcst_AZP <- merge(ASP_ECC_noDZP_SZcst_diff, AZP_same)
+dim(ASP_ECC_noDZP_SZcst_AZP)[1]
 ASP_ECC_noDZP_SZcst_AZP$sign_check_AZP <- ASP_ECC_noDZP_SZcst_AZP$log2FoldChange_CSsa_sig*ASP_ECC_noDZP_SZcst_AZP$log2FoldChange_CZbd_sig
-ASP_ECC_noDZP_SZcst_AZP_same <- ASP_ECC_noDZP_SZcst_AZP[ASP_ECC_noDZP_SZcst_AZP$sign_check_AZP > 0] #2 #1
-ASP_ECC_noDZP_SZcst_AZP_diff <- ASP_ECC_noDZP_SZcst_AZP[ASP_ECC_noDZP_SZcst_AZP$sign_check_AZP < 0] #23
+ASP_ECC_noDZP_SZcst_AZP_same <- ASP_ECC_noDZP_SZcst_AZP[ASP_ECC_noDZP_SZcst_AZP$sign_check_AZP > 0] #1
+ASP_ECC_noDZP_SZcst_AZP_diff <- ASP_ECC_noDZP_SZcst_AZP[ASP_ECC_noDZP_SZcst_AZP$sign_check_AZP < 0] #39
 
 ##9.2 Final filtered Co-option gene set: ----
 
 #I have kept the set name of the last set used for the final filtering now to save renaming variables later.
 ASP_ECC_noDZP_SZcst <- ASP_ECC_noDZP_SZcst_diff[which(ASP_ECC_noDZP_SZcst_diff$Names %notin% ASP_ECC_noDZP_SZcst_AZP_same$Names),]
-upreg_coopt_no <- dim(ASP_ECC_noDZP_SZcst[ASP_ECC_noDZP_SZcst$log2FoldChange_CSsa_sig > 0])[1] #3 genes
+upreg_coopt_no <- dim(ASP_ECC_noDZP_SZcst[ASP_ECC_noDZP_SZcst$log2FoldChange_CSsa_sig > 0])[1] #1 genes
 
+dim(ASP_ECC_noDZP_SZcst)[1] #44
 
-dim(ASP_ECC_noDZP_SZcst)[1] #30
-
-cooption_gene_set <- ASP_ECC_noDZP_SZcst$Names
-#write.csv(cooption_gene_set, "cooption_gene_set_02_08_24.csv")
-
-
-# ###9.2.1 sub pattern 1 - full cooption - no significant plasticity in salt ----
-# 
-# ASP_ECC_noDZP_SZcst_noDSP <- merge(ASP_ECC_noDZP_SZcst, no_DSP, by = "Names")
-# dim(ASP_ECC_noDZP_SZcst_noDSP)[1] #20
-# 
-# ###9.2.2 sub pattern 2 - significant plasticity in salt (partial co-option) ----
-# 
-# ASP_ECC_noDZP_SZcst_DSP <- merge(ASP_ECC_noDZP_SZcst, DSP_same, by = "Names")
-# dim(ASP_ECC_noDZP_SZcst_DSP)[1] #9
-# 
-# ASP_ECC_noDZP_SZcst_DSP_up <- ASP_ECC_noDZP_SZcst_DSP[ASP_ECC_noDZP_SZcst_DSP$log2FoldChange_CSgr_sig > 0] #3
-# ASP_ECC_noDZP_SZcst_DSP_down <- ASP_ECC_noDZP_SZcst_DSP[ASP_ECC_noDZP_SZcst_DSP$log2FoldChange_CSgr_sig < 0] #6
-
-######################################################################-
 ####9.3 assimilation for comparison to cooption ----
-######################################################################-
 
 dim(ECC_noDZP)
 
@@ -1038,9 +993,9 @@ dim(AZP_ECC_noDZP_ECZ) #43 with EC in zinc and evolved fix expression from PC
 length(which(AZP_ECC_noDZP$Names %notin% AZP_ECC_noDZP_ECZ$Names))
 
 
-#################################################################################################################-
+##################################################-
 #10.0 AIM 1 results visualisation (graphs/tables) ----
-################################################################################################################-
+##################################################-
 
 ##10.1 compare ASP vs DSP gene sets ----
 
@@ -1115,7 +1070,8 @@ expr_table <- data.frame(pop_names, ecotype, DE_genes_salt, DE_genes_zinc)
 #         aspect.ratio = 1, axis.title = element_text(size = 15), axis.text = element_text(size = 14))
 # DE_genes_both_graph
 
-#salt graph
+
+#salt graph same pattern as before with 0.05 alpha tests, just a few more genes in each group.
 #set the order of factor levels to fix order first, then plot this order of info in bar chart
 salt_DE_genes <- expr_table %>% mutate(pop_names=fct_relevel(pop_names, c("Coast-W", "Mine-W", "Coast-E", "Mine-E", "Coast-B", "Mine-B"))) %>%
   ggplot(., aes(x= pop_names, y=DE_genes_salt, fill = ecotype))+
@@ -1128,40 +1084,17 @@ salt_DE_genes <- expr_table %>% mutate(pop_names=fct_relevel(pop_names, c("Coast
         axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 22), axis.text = element_text(size = 18),
         legend.text = element_text(size = 18), legend.title = element_text(size = 22),
         aspect.ratio = 1)
-salt_DE_genes
-
-#edit graph to have horizontal lines across at coast/mine overlap cut-offs for random chance overlaps:
-
-#create dataframe/vectors with cut-off values in:
-labels <- c("coast", "mine")
-max_rand_overlap <- c(191,18)
-
-max_overlap_cutoff <- data.frame(labels, max_rand_overlap)
-
-salt_DE_genes1 <- expr_table %>% mutate(pop_names=fct_relevel(pop_names, c("Coast-W", "Mine-W", "Coast-E", "Mine-E", "Coast-B", "Mine-B"))) %>%
-  ggplot(., aes(x= pop_names, y=DE_genes_salt, fill = ecotype))+
-  geom_col()+
-  geom_hline(yintercept = max_rand_overlap, colour="grey20")+
-  xlab("Population")+
-  ylab("DE gene number in salt response")+
-  scale_fill_manual(values = c(col_coast, col_mine)) +
-  theme(legend.position = "none")+
-  theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
-        axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 22), axis.text = element_text(size = 18),
-        legend.text = element_text(size = 18), legend.title = element_text(size = 22),
-        aspect.ratio = 1)
-salt_DE_genes1
-
+#salt_DE_genes
 # 
 # 
 # #zinc graph
-# zinc_DE_genes <- expr_table %>% mutate(pop_names=fct_relevel(pop_names, c("Coast-W", "Mine-W", "Coast-E", "Mine-E", "Coast-W&E", "Mine-W&E"))) %>%
+# zinc_DE_genes <- expr_table %>% mutate(pop_names=fct_relevel(pop_names, c("Coast-W", "Mine-W", "Coast-E", "Mine-E", "Coast-B", "Mine-B"))) %>%
 #   ggplot(., aes(x= pop_names, y=DE_genes_zinc, fill = ecotype))+
 #   geom_col()+
 #   xlab("Population")+
 #   ylab("DE gene number in zinc response")+
 #   scale_fill_manual(values = c(col_coast, col_mine)) +
-#   theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(), 
+#   theme(panel.background = element_rect(colour = "gray40", fill = "transparent"), panel.grid = element_blank(),
 #         axis.ticks.length = unit(.20, "cm"), axis.title = element_text(size = 15), axis.text = element_text(size = 13),
 #         legend.text = element_text(size = 15), legend.title = element_text(size = 14),
 #         aspect.ratio = 1.2)
@@ -1191,10 +1124,6 @@ setFplot_page(page = "a4", margins = "normal", units = "tw", pt = 20, reset = FA
 # pdf(width = 14, file = "both_DE_genes_plot_15_11_23.pdf")
 # DE_genes_both_graph
 # dev.off()
-
-pdf(file = "salt_DE_genes1_17_07_24_v3.pdf")
-salt_DE_genes1
-dev.off()
 
 #try a more precise text size export:
 
@@ -1317,14 +1246,14 @@ ecotype <- rep(c("cst", "cst", "cst", "cst", "cst", "cst",
   "min", "min", "min", "min", "min", "min",
   "min", "min", "min", "min", "min", "min",
   "min", "min", "min", "min", "min", "min",
-  "min", "min", "min", "min", "min", "min"), 23093)
+  "min", "min", "min", "min", "min", "min"), 20781)
 length(ecotype)
 
 #geog factor made much quicker method than the loop:
 geography <- rep(c("A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B",
                   "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B",
                   "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B",
-                  "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B"), 23093)
+                  "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B"), 20781)
 
 length(geography)
 
@@ -1376,7 +1305,7 @@ Cue_transfer_lineplots1 <- ggplot(Cue_transfer_norm_counts, aes(x = eco_treat, y
         legend.background = element_blank(), legend.key = element_blank(), 
         legend.title = element_text(size = 10), legend.text = element_text(size = 8))+
   facet_wrap(~ gene_name, nrow= 8, scale = "free")
-#Cue_transfer_lineplots1
+Cue_transfer_lineplots1
 
 # pdf(file = "Cue_transfer_lineplots1_26_02_24.pdf", width = 14, height = 16)
 # Cue_transfer_lineplots1
@@ -1398,16 +1327,13 @@ Cooption_lineplots1 <- ggplot(Cooption_norm_counts, aes(x = eco_treat, y = log(n
         axis.title = element_text(size = 10), axis.text = element_text(size = 8), 
         legend.background = element_blank(), legend.key = element_blank(), 
         legend.title = element_text(size = 10), legend.text = element_text(size = 8))+
-  facet_wrap(~ gene_name, ncol = 5, scale = "free")
+  facet_wrap(~ gene_name, ncol = 6, scale = "free")
 Cooption_lineplots1
 
 # pdf(file = "Cooption_lineplots1_26_02_24.pdf", width = 14, height = 16)
 # Cooption_lineplots1
 # dev.off()
 
-pdf(file = "Cooption_lineplots1_02_08_24.pdf", width = 14, height = 16)
-Cooption_lineplots1
-dev.off()
 
 ##############################################################################################-
 ##11.3 lineboxplots with means per ecotype and all genes in one graph ----
@@ -1459,15 +1385,15 @@ DSP_noASP_table <- DSP_table[which(DSP_table$pattern == "no_ASP_notsame"),]
 #subset the broader set to generate the sets for the specific hypotheses of interest:
 Cue_transfer_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_EDZP_SZcst$Names),]
 
-# Cue_transfer_table$pattern <- if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_DSP$Names, "Harmonisation", 
-#         if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_no_DSP$Names, "Cue-switching", "Other"))
-# 
-# Cue_transfer_table1 <- Cue_transfer_table
-# Cue_transfer_table1$pattern <- factor(Cue_transfer_table1$pattern, levels = c("Harmonisation", "Cue-switching", "Other"))
-# Cue_transfer_table1$eco_treat <- factor(Cue_transfer_table1$eco_treat, levels = c("cstS", "cstC", "cstZ", "minS", "minC", "minZ"))
-# 
-# Cue_transfer_table2 <- Cue_transfer_table1
-# Cue_transfer_table2$eco_treat <- factor(Cue_transfer_table2$eco_treat, levels = c("cstC", "cstS", "cstZ", "minC", "minS", "minZ"))
+#Cue_transfer_table$pattern <- if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_DSP$Names, "Harmonisation", 
+#        if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_no_DSP$Names, "Cue-switching", "Other"))
+
+Cue_transfer_table1 <- Cue_transfer_table
+#Cue_transfer_table1$pattern <- factor(Cue_transfer_table1$pattern, levels = c("Harmonisation", "Cue-switching", "Other"))
+Cue_transfer_table1$eco_treat <- factor(Cue_transfer_table1$eco_treat, levels = c("cstS", "cstC", "cstZ", "minS", "minC", "minZ"))
+
+Cue_transfer_table2 <- Cue_transfer_table1
+Cue_transfer_table2$eco_treat <- factor(Cue_transfer_table2$eco_treat, levels = c("cstC", "cstS", "cstZ", "minC", "minS", "minZ"))
 
 # #smaller individual sets for individual graphs:
 # ASP_EDZP_mean_ecotreat <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_EDZP_same$Names),]
@@ -1481,17 +1407,17 @@ Cue_transfer_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_e
 ###11.3.3 tables for Cooption ----
 
 cooption_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst$Names),]
-# cooption_table$pattern <- if_else(cooption_table$gene_name %in% ASP_ECC_noDZP_SZcst_noDSP$Names, "full", 
-#                                       if_else(cooption_table$gene_name %in% ASP_ECC_noDZP_SZcst_DSP$Names, "partial", "other"))
-# cooption_table$pattern <- factor(cooption_table$pattern, levels = c("full", "partial", "other"))
+#cooption_table$pattern <- if_else(cooption_table$gene_name %in% ASP_ECC_noDZP_SZcst_noDSP$Names, "full", 
+#                                      if_else(cooption_table$gene_name %in% ASP_ECC_noDZP_SZcst_DSP$Names, "partial", "other"))
+#cooption_table$pattern <- factor(cooption_table$pattern, levels = c("full", "partial", "other"))
 
 #make copy where factors are changed:
-#cooption_table1 <- cooption_table
-# cooption_table1$pattern <- factor(cooption_table1$pattern, levels = c("full", "partial", "other"))
-# cooption_table1$eco_treat <- factor(cooption_table1$eco_treat, levels = c("cstS", "cstC", "cstZ", "minS", "minC", "minZ"))
-# 
-# cooption_table2 <- cooption_table1
-# cooption_table2$eco_treat <- factor(cooption_table2$eco_treat, levels = c("cstC", "cstS", "cstZ", "minC", "minS", "minZ"))
+cooption_table1 <- cooption_table
+#cooption_table1$pattern <- factor(cooption_table1$pattern, levels = c("full", "partial", "other"))
+cooption_table1$eco_treat <- factor(cooption_table1$eco_treat, levels = c("cstS", "cstC", "cstZ", "minS", "minC", "minZ"))
+
+cooption_table2 <- cooption_table1
+cooption_table2$eco_treat <- factor(cooption_table2$eco_treat, levels = c("cstC", "cstS", "cstZ", "minC", "minS", "minZ"))
 
 
 # #subpatterns:
@@ -1523,6 +1449,19 @@ cooption_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotr
 # str(plast_facil_table)
 
 ###############################################-
+###11.3.5 create table for the single strict pre-adaptive plastic gene
+###############################################-
+
+preadapt_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_DZP_AZP_DSP$Names),]
+preadapt_table2 <- preadapt_table
+preadapt_table2$eco_treat <- factor(preadapt_table2$eco_treat, levels = c("cstC", "cstS", "cstZ", "minC", "minS", "minZ"))
+
+#looser preadaptive set:
+Lpreadapt_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_DZP_AZP_same$Names),]
+Lpreadapt_table2 <- Lpreadapt_table
+Lpreadapt_table2$eco_treat <- factor(Lpreadapt_table2$eco_treat, levels = c("cstC", "cstS", "cstZ", "minC", "minS", "minZ"))
+
+###############################################-
 ##11.4 Plot the line/box plots  ----
 ###############################################-
 
@@ -1539,27 +1478,9 @@ names(ecotype.labs) <- c("cst", "min")
 
 ###11.4.1 plot Cue transfer ----
 
-# #4 way line and box plot, controls 2nd:
-# Cue_transfer_simple_lineboxplot1 <- ggplot(Cue_transfer_table1, aes(x = eco_treat, y = log(mean_norm_count))) +
-#   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
-#   geom_boxplot(outlier.shape = NA, fill = "gray85", colour = "gray10") +
-#   geom_line(aes(group = gene_name), colour = "gray40") +
-#   geom_point(colour = "blue4", fill = "blue", alpha = 0.6, cex = 4, shape = 21)+
-#   theme_classic()+
-#   theme(panel.background = element_blank(), 
-#         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-#         aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
-#   xlab("Ecotype and treatment")+
-#   ylab("log of normalised gene counts")+
-#   scale_x_discrete(labels=c("cstS" = "Salt", "cstC" = "Control", "cstZ" = "Zinc",
-#                             "minS" = "Salt", "minC" = "Control", "minZ" = "Zinc"))+
-#   #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
-#   facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
-#            labeller = labeller(ecotype = ecotype.labs), strip = strip)
-# Cue_transfer_simple_lineboxplot1
 
 ##alternate order of factors with control first:
-Cue_transfer_simple_lineboxplot2 <- ggplot(Cue_transfer_table, aes(x = eco_treat, y = log(mean_norm_count))) +
+Cue_transfer_simple_lineboxplot2 <- ggplot(Cue_transfer_table2, aes(x = eco_treat, y = log(mean_norm_count))) +
   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
   geom_boxplot(outlier.shape = NA, fill = "gray85", colour = "gray10") +
   geom_line(aes(group = gene_name), colour = "gray40") +
@@ -1567,7 +1488,7 @@ Cue_transfer_simple_lineboxplot2 <- ggplot(Cue_transfer_table, aes(x = eco_treat
   theme_classic()+
   theme(panel.background = element_blank(), 
         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-        aspect.ratio = 1.2, axis.title = element_text(size = 20), axis.text = element_text(size = 18))+
+        aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
   xlab("Ecotype and treatment")+
   ylab("log of normalised gene counts")+
   scale_x_discrete(labels=c("cstC" = "Control", "cstS" = "Salt", "cstZ" = "Zinc",
@@ -1577,26 +1498,6 @@ Cue_transfer_simple_lineboxplot2 <- ggplot(Cue_transfer_table, aes(x = eco_treat
               labeller = labeller(ecotype = ecotype.labs), strip = strip)
 Cue_transfer_simple_lineboxplot2
 
-
-# # Subsetted graph - maybe put into supp figure. 
-# cue_transfer_mean_lineboxplot1 <- ggplot(Cue_transfer_table1, aes(x = eco_treat, y = log(mean_norm_count), colour = pattern, fill = pattern)) +
-#   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
-#   geom_boxplot(outlier.shape = NA, fill = "gray80", colour = "grey40") +
-#   #geom_boxplot(outlier.shape = NA, fill = "gray80") +
-#   geom_line(aes(group = gene_name)) +
-#   geom_point(alpha = 0.7, cex = 2, shape = 21)+
-#   theme_classic()+
-#   scale_colour_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   scale_fill_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   theme(panel.background = element_blank(), 
-#         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-#         aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
-#   xlab("Ecotype and treatment")+
-#   ylab("log of normalised gene counts")+
-#   #facet_grid(pattern~ecotype)
-#   facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
-# #cue_transfer_mean_lineboxplot1
-
 #colours that are colour-blind friendly from particular palette, run to list them:
 #palette.colors(palette = "Okabe-Ito")
 #could try again with the safe palette)
@@ -1605,14 +1506,14 @@ Cue_transfer_simple_lineboxplot2
 ###11.4.2 plot Cooption ----
 
 #factor order with control first:
-cooption_mean_simple_lineboxplot2 <- ggplot(cooption_table, aes(x = eco_treat, y = log(mean_norm_count))) +
+cooption_mean_simple_lineboxplot2 <- ggplot(cooption_table2, aes(x = eco_treat, y = log(mean_norm_count))) +
   geom_boxplot(outlier.shape = NA, fill = "gray85") +
   geom_line(aes(group = gene_name), colour = "gray40") +
   geom_point(colour = "darkred", fill = "red", alpha = 0.6, cex = 4, shape = 21)+
   theme_classic()+
   theme(panel.background = element_blank(), 
         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-        aspect.ratio = 1.2, axis.title = element_text(size = 20), axis.text = element_text(size = 18))+
+        aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
   xlab("Ecotype and treatment")+
   ylab("log of normalised gene counts")+
   scale_x_discrete(labels=c("cstC" = "Control", "cstS" = "Salt",  "cstZ" = "Zinc",
@@ -1622,48 +1523,48 @@ cooption_mean_simple_lineboxplot2 <- ggplot(cooption_table, aes(x = eco_treat, y
               labeller = labeller(ecotype = ecotype.labs), strip = strip)
 cooption_mean_simple_lineboxplot2
 
-#both in one grid with ggarrange:
-cue_t_coopt_both_lineboxplots <- ggarrange(Cue_transfer_simple_lineboxplot2, cooption_mean_simple_lineboxplot2, ncol = 1, align = "hv")
-cue_t_coopt_both_lineboxplots
 
-####
-#graph for the ASP changes thing: 
-# 
-# ASP_mean_lineboxplot1 <- ggplot(ASP_other_patterns_table, aes(x = eco_treat, y = log(mean_norm_count), colour = pattern, fill = pattern)) +
-#   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
-#   #geom_boxplot(outlier.shape = NA, fill = "gray80", colour = "grey40") +
-#   geom_boxplot(outlier.shape = NA, fill = "gray80") +
-#   geom_line(aes(group = gene_name)) +
-#   geom_point(alpha = 0.7, cex = 2, shape = 21)+
-#   theme_classic()+
-#   scale_colour_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   scale_fill_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   theme(panel.background = element_blank(), 
-#         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-#         aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
-#   xlab("Ecotype and treatment")+
-#   ylab("log of normalised gene counts")+
-#   #facet_grid(pattern~ecotype)
-#   facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
-# ASP_mean_lineboxplot1
-# 
-# DSP_mean_lineboxplot1 <- ggplot(DSP_noASP_table, aes(x = eco_treat, y = log(mean_norm_count), colour = pattern, fill = pattern)) +
-#   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
-#   #geom_boxplot(outlier.shape = NA, fill = "gray80", colour = "grey40") +
-#   geom_boxplot(outlier.shape = NA, fill = "gray80") +
-#   geom_line(aes(group = gene_name)) +
-#   geom_point(alpha = 0.7, cex = 2, shape = 21)+
-#   theme_classic()+
-#   scale_colour_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   scale_fill_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   theme(panel.background = element_blank(), 
-#         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-#         aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
-#   xlab("Ecotype and treatment")+
-#   ylab("log of normalised gene counts")+
-#   #facet_grid(pattern~ecotype)
-#   facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
-# DSP_mean_lineboxplot1
+###11.4.3 plot the graph for the preadaptive_gene ----
+
+#strict sense preadaptive plasticity (1 gene)
+preadapt_simple_lineboxplot2 <- ggplot(preadapt_table2, aes(x = eco_treat, y = log(mean_norm_count))) +
+  #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
+  geom_boxplot(outlier.shape = NA, fill = "gray85", colour = "gray10") +
+  geom_line(aes(group = gene_name), colour = "gray40") +
+  geom_point(colour = "blue4", fill = "blue", alpha = 0.6, cex = 4, shape = 21)+
+  theme_classic()+
+  theme(panel.background = element_blank(), 
+        strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
+        aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
+  xlab("Ecotype and treatment")+
+  ylab("log of normalised gene counts")+
+  scale_x_discrete(labels=c("cstC" = "Control", "cstS" = "Salt", "cstZ" = "Zinc",
+                            "minC" = "Control", "minS" = "Salt", "minZ" = "Zinc"))+
+  #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
+  facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
+              labeller = labeller(ecotype = ecotype.labs), strip = strip)
+preadapt_simple_lineboxplot2
+
+#relaxed sense preadaptive plasticity (allows for random plasticity value in salt in mines)
+Lpreadapt_simple_lineboxplot2 <- ggplot(Lpreadapt_table2, aes(x = eco_treat, y = log(mean_norm_count))) +
+  #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
+  geom_boxplot(outlier.shape = NA, fill = "gray85", colour = "gray10") +
+  geom_line(aes(group = gene_name), colour = "gray40") +
+  geom_point(colour = "blue4", fill = "blue", alpha = 0.6, cex = 4, shape = 21)+
+  theme_classic()+
+  theme(panel.background = element_blank(), 
+        strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
+        aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
+  xlab("Ecotype and treatment")+
+  ylab("log of normalised gene counts")+
+  scale_x_discrete(labels=c("cstC" = "Control", "cstS" = "Salt", "cstZ" = "Zinc",
+                            "minC" = "Control", "minS" = "Salt", "minZ" = "Zinc"))+
+  #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
+  facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
+              labeller = labeller(ecotype = ecotype.labs), strip = strip)
+Lpreadapt_simple_lineboxplot2
+
+
 
 ###11.4.3 export plots to pdfs ----
 
@@ -1673,90 +1574,40 @@ cue_t_coopt_both_lineboxplots
 setFplot_page(page = "a4", margins = "normal", units = "tw",pt = 20, w2h = 1.8, reset = FALSE)
 # # 
 # 
+# pdf_fit(file = "cue_transfer_lineboxplot1_16_11_23.pdf", pt =16, width = 1.8, w2h = 0.8)
+# cue_transfer_mean_lineboxplot1
+# dev.off()
+# 
+# pdf_fit(file = "cooption_lineboxplot1_16_11_23.pdf", pt =16, width = 1.8, w2h = 0.8)
+# cooption_mean_lineboxplot1
+# dev.off()
+# 
+
+# #cue transfer simpler graph for presentations: 3rd year review
+# pdf_fit(file = "Cue_transfer_simple_lineboxplot1_30_01_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
+# Cue_transfer_simple_lineboxplot1
+# dev.off()
 
 pdf_fit(file = "Cue_transfer_simple_lineboxplot2_09_04_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
 Cue_transfer_simple_lineboxplot2
 dev.off()
-
+# 
+# #cooption simpler graph for presentations: 3rd year review
+# pdf_fit(file = "cooption_mean_simple_lineboxplot_30_01_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
+# cooption_mean_simple_lineboxplot
+# dev.off()
+# 
 pdf_fit(file = "cooption_mean_simple_lineboxplot2_09_04_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
 cooption_mean_simple_lineboxplot2
 dev.off()
+#
+# pdf_fit(file = "both_simple_lineboxplot_30_01_23.pdf", pt = 26, width = 1.8, w2h = 0.8)
+# both_simple_lineboxplot1
+# fit.off()
 
-pdf(width = 30, height = 20, paper = "a4", file = "cue_t_coopt_both_lineboxplots_02_08_24.pdf")
-cue_t_coopt_both_lineboxplots
+pdf_fit(file = "preadapt_simple_lineboxplot2_30_07_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
+preadapt_simple_lineboxplot2
 dev.off()
-
-pdf_fit(file = "cue_t_coopt_both_lineboxplots_v2_02_08_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
-cue_t_coopt_both_lineboxplots
-dev.off()
-
-pdf_fit(file = "cue_t_coopt_both_lineboxplots_v4_02_08_24.pdf", pt = 26, width = 1.8, w2h = 0.7)
-cue_t_coopt_both_lineboxplots
-dev.off()
-
-######################################################################################################-
-##11.5 plot numbers of genes with different patterns in a barplot to go above graphs in section  ----
-#####################################################################################################-
-# 
-# Cue_transfer_table$pattern <- if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_DSP$Names, "Harmonisation", 
-#                                       if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_no_DSP$Names, "Cue-switching", "Other"))
-# 
-# 
-# cue_transfer_other <- dim(ASP_EDZP_SZcst)[1] - (dim(ASP_EDZP_SZcst_no_DSP)[1] + dim(ASP_EDZP_SZcst_DSP)[1]) #10
-# 
-# cue_transfer_numbers <- c(dim(ASP_EDZP_SZcst_no_DSP)[1], dim(ASP_EDZP_SZcst_DSP)[1], cue_transfer_other)
-# cue_transfer_labels <- c("harmonisation", "cue-switching", "other")
-# cue_transfer_number_table <- data.frame(cue_transfer_numbers, cue_transfer_labels)
-# str(cue_transfer_number_table)
-# cue_transfer_number_table$cue_transfer_labels <- factor(cue_transfer_number_table$cue_transfer_labels, 
-#                                     levels = c("harmonisation", "cue-switching", "other"))
-# 
-# cooptionotherlength <- dim(ASP_ECC_noDZP_SZcst)[1] - (dim(ASP_ECC_noDZP_SZcst_noDSP)[1] + dim(ASP_ECC_noDZP_SZcst_DSP)[1])
-# 
-# cooption_numbers <- c(dim(ASP_ECC_noDZP_SZcst_noDSP)[1], dim(ASP_ECC_noDZP_SZcst_DSP)[1], cooptionotherlength)
-# cooption_labels <- c("full", "partial", "other")
-# x_value <- c("cooption")
-# 
-# cooption_number_table <- data.frame(cooption_labels, cooption_numbers, x_value)
-# cooption_number_table$cooption_labels <- factor(cooption_number_table$cooption_labels, levels = c("full", "partial", "other"))
-# 
-# 
-# ###11.5.1 plot the graphs ----
-# 
-# #plot cue transfer number graph:
-# cue_transfer_number_graph <- ggplot(cue_transfer_number_table, aes(x = cue_transfer_labels, y = cue_transfer_numbers))+
-#   geom_col(aes(group = cue_transfer_labels), colour = c("#009E73", "#0072B2", "#CC79A7"), 
-#            fill = c("#009E73", "#0072B2", "#CC79A7")) +
-#   ylab("gene number")+
-#   ggtitle("Cue transfer")+
-#   coord_flip()+
-#   theme(panel.background = element_rect(colour = "grey40", fill = NA), panel.grid = element_blank(),
-#         aspect.ratio = 0.5, axis.title = element_text(size = 15), axis.text = element_text(size = 14), 
-#         axis.title.y=element_blank())
-# #cue_transfer_number_graph
-# 
-# #plot cooption number graph:
-# cooption_number_graph <- ggplot(cooption_number_table, aes(x = cooption_labels, y = cooption_numbers))+
-#     geom_col(aes(group = cooption_labels), colour = c("#009E73", "#0072B2", "#CC79A7"), 
-#             fill = c("#009E73", "#0072B2", "#CC79A7")) +
-#     ylab("gene number")+
-#     ggtitle("Cooption")+
-#     coord_flip()+
-#     theme(panel.background = element_rect(colour = "grey40", fill = NA), panel.grid = element_blank(),
-#     aspect.ratio = 0.5, axis.title = element_text(size = 15), axis.text = element_text(size = 14), 
-#     axis.title.y=element_blank())
-# #cooption_number_graph
-
-# 
-# pdf(file = "cue_transfer_number_graph_16_11_23.pdf")
-# cue_transfer_number_graph
-# dev.off()
-# 
-# 
-# pdf(file = "cooption_number_graph_16_11_23.pdf")
-# cooption_number_graph
-# dev.off()
-
 
 ################################################################################-
 #12.0 Functional analyses - annotations and GO ontology enrichment ----
@@ -1805,19 +1656,17 @@ EDZP_model_names <- gsub(".TU.", ".model.", c(EDZP$Names))
 
 #plasticity to salt in coasts having new zinc cue total set
 cue_transfer_model_names <- gsub(".TU.", ".model.", c(ASP_EDZP_SZcst$Names))
-
 #harmonisation gene set
-#harmonisation_model_names <- gsub(".TU.", ".model.", c(ASP_EDZP_SZcst_DSP$Names))
+harmonisation_model_names <- gsub(".TU.", ".model.", c(ASP_EDZP_SZcst_DSP$Names))
 #plasticity switching 5 gene set:
-#Pl_switch_model_names <- gsub(".TU.", ".model.", c(ASP_EDZP_SZcst_no_DSP$Names))
+Pl_switch_model_names <- gsub(".TU.", ".model.", c(ASP_EDZP_SZcst_no_DSP$Names))
 
 #evolved change to zinc and plastic to salt in coasts total set 
 cooption_model_names <- gsub(".TU.", ".model.", c(ASP_ECC_noDZP_SZcst$Names))
-
 #evolved subsets full cooption - no salt plasticity
-#cooption_noDSP_model_names <- gsub(".TU.", ".model.", c(ASP_ECC_noDZP_SZcst_noDSP$Names))
+cooption_noDSP_model_names <- gsub(".TU.", ".model.", c(ASP_ECC_noDZP_SZcst_noDSP$Names))
 #partial cooption - salt plasticity remains (not sure this group is informative)
-#cooption_DSP_model_names <- gsub(".TU.", ".model.", c(ASP_ECC_noDZP_SZcst_DSP$Names))
+cooption_DSP_model_names <- gsub(".TU.", ".model.", c(ASP_ECC_noDZP_SZcst_DSP$Names))
 
 #annotation set that consists of subset of the 2 genegroups of interest subsetted from CC_all_annot (19,304)
 
@@ -1831,7 +1680,7 @@ ECZ_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% ECZ_model_names),]
 #ASP
 ASP_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% ASP_model_names),]
 #dim(ASP_annots)[1] #876
-#view(ASP_annots)
+view(ASP_annots)
 #DSP
 DSP_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% DSP_model_names),]
 #dim(DSP_annots)[1] #144
@@ -1847,39 +1696,37 @@ EDZP_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% EDZP_model_names),]
 
 #COOPTION ASP_ECC_noDZP_SZcst
 cooption_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% cooption_model_names),]
-dim(cooption_annots)[1] #29
-
-# #full cooption
-# cooption_noDSP_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% cooption_noDSP_model_names),]
-# dim(cooption_noDSP_annots)[1] #22
-# #partial cooption
-# cooption_DSP_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% cooption_DSP_model_names),]
-# dim(cooption_DSP_annots)[1] #10
+dim(cooption_annots)[1] #36
+#full cooption
+cooption_noDSP_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% cooption_noDSP_model_names),]
+dim(cooption_noDSP_annots)[1] #22
+#partial cooption
+cooption_DSP_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% cooption_DSP_model_names),]
+dim(cooption_DSP_annots)[1] #10
 
 #CUE TRANSFER (past plasticity to salt also present in response to zinc)
 cue_transfer_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% cue_transfer_model_names),]
 dim(cue_transfer_annots)[1] #26
-
-# #harmonisation
-# harmonisation_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% harmonisation_model_names),]
-# dim(harmonisation_annots)[1] #13
-# #plast switching
-# Pl_switch_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% Pl_switch_model_names),]
-# dim(Pl_switch_annots)[1] #5
+#harmonisation
+harmonisation_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% harmonisation_model_names),]
+dim(harmonisation_annots)[1] #13
+#plast switching
+Pl_switch_annots <- CC_all_annot[which(CC_all_annot$mRNA %in% Pl_switch_model_names),]
+dim(Pl_switch_annots)[1] #5
 
 ##export full files:
 # write.csv(ASP_DSP_same_annots, "ASP_DSP_same_annots_26_05_23.csv")
-#write.csv(ECC_annots, "ECC_annots_06_08_24.csv")
+# write.csv(ECC_annots, "ECC_annots_23_05_23.csv")
 # write.csv(ECZ_annots, "ECZ_annots_23_05_23.csv")
 #write.csv(ASP_annots, "ASP_annots_23_05_23.csv")
 #write.csv(DSP_annots, "DSP_annots_23_05_23.csv")
 # write.csv(AZP_annots, "AZP_annots_23_05_23.csv")
-#write.csv(DZP_annots, "DZP_annots_06_08_24.csv")
+# write.csv(DZP_annots, "DZP_annots_23_05_23.csv")
 # write.csv(EDZP_annots, "EDZP_annots_23_05_23.csv")
 
 ## patterns for hypotheses:
-#write.csv(cooption_annots, "cooption_annots_05_08_24.csv")
-#write.csv(cue_transfer_annots, "Cue_transfer_annots_19_01_24.csv")
+write.csv(cooption_annots, "cooption__annots_19_01_24.csv")
+write.csv(cue_transfer_annots, "Cue_transfer_annots_19_01_24.csv")
 ## 
 # #extra ones I added later:
 # write.csv(cooption_noDSP_annots, "cooption_noDSP_annots_23_06_23.csv")
@@ -1896,16 +1743,11 @@ DZP_annots_Names <- DZP_annots$mRNA
 EDZP_annots_Names <- EDZP_annots$mRNA
 ASP_DSP_same_annots_Names <- ASP_DSP_same_annots$mRNA
 cooption_annots_Names <- cooption_annots$mRNA
-
-
-
+cooption_noDSP_annots_Names <- cooption_noDSP_annots$mRNA
+cooption_DSP_annots_Names <- cooption_DSP_annots$mRNA
 cue_transfer_annots_Names <- cue_transfer_annots$mRNA
-
-# sub groups I am not using:
-# cooption_noDSP_annots_Names <- cooption_noDSP_annots$mRNA
-# cooption_DSP_annots_Names <- cooption_DSP_annots$mRNA
-# harmonisation_annots_Names <- harmonisation_annots$mRNA
-# Pl_switch_annots_Names <- Pl_switch_annots$mRNA
+harmonisation_annots_Names <- harmonisation_annots$mRNA
+Pl_switch_annots_Names <- Pl_switch_annots$mRNA
 
 #export files that are just names (maybe don't need this):
 # write.csv(ASP_DSP_same_annots$mRNA, "ASP_DSP_same_annots_Names_26_05_23.csv")
@@ -1917,7 +1759,7 @@ cue_transfer_annots_Names <- cue_transfer_annots$mRNA
 # write.csv(DZP_annots_Names, "DZP_annots_Names_23_05_23")
 # write.csv(EDZP_annots_Names, "EDZP_annots_Names_23_05_23")
 
-# write.csv(cooption_annots_Names, "cooption_annots_Names_05_08_24")
+# write.csv(cooption_annots_Names, "cooption_annots_Names_19_01_24")
 # write.csv(cue_transfer_annots_Names, "cue_transfer_annots_Names_19_01_24")
 
 
@@ -1940,7 +1782,7 @@ readr::write_tsv(Geneidtogo, file = "geneIDtoGO_23_05_23.map", col_names = F)
 
 #only load topgo here as has select function which intereferes with the dplyr select in previous lines of code.
 library(topGO) 
-#packageVersion("topGO")
+packageVersion("topGO")
 
 #set up geneIDtoGO file!
 geneID2GO <-readMappings(file = "geneIDtoGO_23_05_23.map")
@@ -1985,9 +1827,9 @@ str(geneList_DSP)
 # names(geneList_EDZP) <- geneNames
 # str(geneList_EDZP)
 
-# geneList_cue_transfer <- factor(as.integer(geneNames %in% cue_transfer_annots$mRNA))
-# names(geneList_cue_transfer) <- geneNames
-# str(geneList_cue_transfer)
+geneList_cue_transfer <- factor(as.integer(geneNames %in% cue_transfer_annots$mRNA))
+names(geneList_cue_transfer) <- geneNames
+str(geneList_cue_transfer)
 
 # geneList_harmonisation <- factor(as.integer(geneNames %in% harmonisation_annots_Names))
 # names(geneList_harmonisation) <- geneNames
@@ -2019,13 +1861,13 @@ str(geneList_cooption)
 #                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
 # numGenes(GOdata_ECZ)
 
-# GOdata_ASP <- new("topGOdata", ontology = "BP", allGenes = geneList_ASP, 
-#                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
-# numGenes(GOdata_ASP)
-# 
-# GOdata_DSP <- new("topGOdata", ontology = "BP", allGenes = geneList_DSP, 
-#                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
-# numGenes(GOdata_DSP)
+GOdata_ASP <- new("topGOdata", ontology = "BP", allGenes = geneList_ASP, 
+                  annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
+numGenes(GOdata_ASP)
+
+GOdata_DSP <- new("topGOdata", ontology = "BP", allGenes = geneList_DSP, 
+                  annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
+numGenes(GOdata_DSP)
 
 # GOdata_ASP_DSP <- new("topGOdata", ontology = "BP", allGenes = geneList_ASP_DSP, 
 #                       annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
@@ -2035,7 +1877,7 @@ str(geneList_cooption)
 #                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
 # numGenes(GOdata_AZP)
 # 
-# GOdata_DZP <- new("topGOdata", ontology = "BP", allGenes = geneList_DZP,
+# GOdata_DZP <- new("topGOdata", ontology = "BP", allGenes = geneList_DZP, 
 #                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
 # numGenes(GOdata_DZP)
 # 
@@ -2043,17 +1885,17 @@ str(geneList_cooption)
 #                    annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
 # numGenes(GOdata_EDZP)
 
-# GOdata_cue_transfer <- new("topGOdata", ontology = "BP", allGenes = geneList_cue_transfer, 
-#                              annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
-# numGenes(GOdata_cue_transfer)
+GOdata_cue_transfer <- new("topGOdata", ontology = "BP", allGenes = geneList_cue_transfer, 
+                             annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
+numGenes(GOdata_cue_transfer)
 
 # GOdata_harmonisation <- new("topGOdata", ontology = "BP", allGenes = geneList_harmonisation, 
 #                                  annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
 # numGenes(GOdata_harmonisation)
 
-# GOdata_cooption <- new("topGOdata", ontology = "BP", allGenes = geneList_cooption, 
-#                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
-# numGenes(GOdata_cooption)
+GOdata_cooption <- new("topGOdata", ontology = "BP", allGenes = geneList_cooption, 
+                  annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
+numGenes(GOdata_cooption)
 
 # GOdata_cooption_noDSP <- new("topGOdata", ontology = "BP", allGenes = geneList_cooption_noDSP, 
 #                             annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
@@ -2193,8 +2035,7 @@ sign_fisher_weight_cooption <- subset(res_fisher_weight_cooption, as.numeric(wei
 #write.csv(sign_fisher_weight_cue_transfer, file = "topGO_sign_fisher_weight_cue_transfer_19_01_24.csv")
 #write.csv(sign_fisher_weight_harmonisation, file = "topGO_sign_fisher_weight_harmonisation_19_01_24.csv")
 #
-#write.csv(sign_fisher_weight_cooption, file = "topGO_sign_fisher_weight_cooption_05_08_24.csv")
-#
+#write.csv(sign_fisher_weight_cooption, file = "topGO_sign_fisher_weight_cooption_19_01_24.csv")
 #write.csv(sign_fisher_weight_cooption_noDSP, "topGO_sign_fisher_weight_cooption_noDSP_19_01_24.csv")
 #write.csv(sign_fisher_weight_cooption_DSP, "topGO_sign_fisher_weight_cooption_DSP_19_01_24.csv")
 
