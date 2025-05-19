@@ -674,9 +674,10 @@ ECC_same_count <- dim(ECC_same)[1] #124
 
 ECC_same_up <- ECC_same[ECC_same$log2FoldChange_C1grsa_sig > 0,]
 ECC_same_down <- ECC_same[ECC_same$log2FoldChange_C1grsa_sig < 0,]
-dim(ECC_same_down)
+dim(ECC_same_down) #98
+dim(ECC_same_up) #26
 
-write.csv(ECC_same, "ECC_same_124_18_07_24.csv")
+#write.csv(ECC_same, "ECC_same_124_18_07_24.csv")
 
 ##4.3 evolutionary change in salt response if needed ----
 
@@ -727,6 +728,8 @@ ASP_down <- ASP_same[ASP_same$log2FoldChange_CSbd_sig < 0,]
 dim(ASP_up)[1] #259
 dim(ASP_down)[1] #700
 
+write.csv(ASP_same, "ASP_same_957_16_05_25.csv")
+
 ##5.2 Descendant (Mine) salt plasticity ----
 
 DSP <- merge(CSgr_sig1, CSpp_sig1, by = "Names")
@@ -747,6 +750,7 @@ dim(no_DSP)[1] #15477
 # no_DSPfilt1 <- no_DSP[no_DSP$log2FoldChange_CSgr_ns %between% c(-0.5, 0.5) ,]
 # no_DSPfilt2 <- no_DSP[no_DSP$log2FoldChange_CSpp_ns %between% c(-0.5, 0.5) ,]
 
+write.csv(DSP_same, "DSP_same_155_16_05_25.csv")
 
 ##5.3 Ancestral (Coastal) zinc plasticity ----
 
@@ -789,7 +793,7 @@ DZP_same_count <- dim(DZP_same)[1] #143
 DZP_same_up <- DZP_same[DZP_same$log2FoldChange_CZgr_sig > 0,]
 DZP_same_down <- DZP_same[DZP_same$log2FoldChange_CZgr_sig < 0,]
 
-write.csv(DZP_same, "DZP_same_143_18_07_24.csv")
+#write.csv(DZP_same, "DZP_same_143_18_07_24.csv")
 
 ###5.4.1 Derived zinc plasticity (DZP with ECZ) ----
 
@@ -797,6 +801,14 @@ EDZP <- merge(DZP_same, ECZ_same, by = "Names")
 EDZP_count <- dim(EDZP)[1] #91
 
 write.csv(EDZP, "EDZP_91_18_07_24.csv")
+
+dim(EDZP) 
+
+EDZP_up <- EDZP[EDZP$log2FoldChange_CZgr_sig > 0,]
+EDZP_down <- EDZP[EDZP$log2FoldChange_CZgr_sig < 0,]
+
+dim(EDZP_up) #29
+dim(EDZP_down) #62
 
 # #unused, DZP same as evolution direction:
 #EDZP$signEDZP <- EDZP$log2FoldChange_CZgr_sig*EDZP$log2FoldChange_Zgrsa_sig
@@ -929,6 +941,11 @@ ASP_EDZP_SZcst <- ASP_EDZP_SZcst[which(ASP_EDZP_SZcst$Names %notin% ASP_EDZP_SZc
 
 #final number of genes with cue transfer = 28
 
+#final number of genes with cue transfer that are upregulated vs down regulated
+ASP_EDZP_SZcst_up <- ASP_EDZP_SZcst[which(ASP_EDZP_SZcst$log2FoldChange_CSsa_sig > 0),]
+ASP_EDZP_SZcst_down <- ASP_EDZP_SZcst[which(ASP_EDZP_SZcst$log2FoldChange_CSsa_sig < 0),]
+#28 down. 
+
 #write out the names of the set to a file/the output itself:
 #write.csv(ASP_EDZP_SZcst, "cue_transfer_02_08_24.csv")
 
@@ -998,11 +1015,16 @@ ASP_ECC_noDZP_SZcst_AZP_diff <- ASP_ECC_noDZP_SZcst_AZP[ASP_ECC_noDZP_SZcst_AZP$
 ASP_ECC_noDZP_SZcst <- ASP_ECC_noDZP_SZcst_diff[which(ASP_ECC_noDZP_SZcst_diff$Names %notin% ASP_ECC_noDZP_SZcst_AZP_same$Names),]
 upreg_coopt_no <- dim(ASP_ECC_noDZP_SZcst[ASP_ECC_noDZP_SZcst$log2FoldChange_CSsa_sig > 0])[1] #3 genes
 
-
 dim(ASP_ECC_noDZP_SZcst)[1] #30
+
+#get the number of up and down reg genes in the final cooption set:
+ASP_ECC_noDZP_SZcst_up <- ASP_ECC_noDZP_SZcst[which(ASP_ECC_noDZP_SZcst$log2FoldChange_CSsa_sig > 0),] #n = 3
+ASP_ECC_noDZP_SZcst_down <-  ASP_ECC_noDZP_SZcst[which(ASP_ECC_noDZP_SZcst$log2FoldChange_CSsa_sig < 0),] #n = 27
 
 cooption_gene_set <- ASP_ECC_noDZP_SZcst$Names
 #write.csv(cooption_gene_set, "cooption_gene_set_02_08_24.csv")
+
+
 
 
 # ###9.2.1 sub pattern 1 - full cooption - no significant plasticity in salt ----
@@ -1405,9 +1427,9 @@ Cooption_lineplots1
 # Cooption_lineplots1
 # dev.off()
 
-pdf(file = "Cooption_lineplots1_02_08_24.pdf", width = 14, height = 16)
-Cooption_lineplots1
-dev.off()
+# pdf(file = "Cooption_lineplots1_02_08_24.pdf", width = 14, height = 16)
+# Cooption_lineplots1
+# dev.off()
 
 ##############################################################################################-
 ##11.3 lineboxplots with means per ecotype and all genes in one graph ----
@@ -1459,6 +1481,14 @@ DSP_noASP_table <- DSP_table[which(DSP_table$pattern == "no_ASP_notsame"),]
 #subset the broader set to generate the sets for the specific hypotheses of interest:
 Cue_transfer_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_EDZP_SZcst$Names),]
 
+#need to define new factors within the due transfer table to get factor of up vs down. 
+ASP_EDZP_SZcst
+
+# partial_cooption_mean_ecotreat_up <- 
+#CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst_DSP_up$Names),]
+# partial_cooption_mean_ecotreat_down <- 
+#CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst_DSP_down$Names),]
+
 # Cue_transfer_table$pattern <- if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_DSP$Names, "Harmonisation", 
 #         if_else(Cue_transfer_table$gene_name %in% ASP_EDZP_SZcst_no_DSP$Names, "Cue-switching", "Other"))
 # 
@@ -1481,6 +1511,13 @@ Cue_transfer_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_e
 ###11.3.3 tables for Cooption ----
 
 cooption_table <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst$Names),]
+
+#get upreg and down reg tables to plot graphs as separate entities:
+cooption_table_up <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst_up$Names),]
+cooption_table_down <- CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst_down$Names),]
+
+cooption_table$direction <- if_else(cooption_table$gene_name %in% ASP_ECC_noDZP_SZcst_up$Names, "up", "down")
+
 # cooption_table$pattern <- if_else(cooption_table$gene_name %in% ASP_ECC_noDZP_SZcst_noDSP$Names, "full", 
 #                                       if_else(cooption_table$gene_name %in% ASP_ECC_noDZP_SZcst_DSP$Names, "partial", "other"))
 # cooption_table$pattern <- factor(cooption_table$pattern, levels = c("full", "partial", "other"))
@@ -1558,11 +1595,18 @@ names(ecotype.labs) <- c("cst", "min")
 #            labeller = labeller(ecotype = ecotype.labs), strip = strip)
 # Cue_transfer_simple_lineboxplot1
 
+#need to make subset to colour the points by for up/down. 
+# partial_cooption_mean_ecotreat_up <- 
+#CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst_DSP_up$Names),]
+# partial_cooption_mean_ecotreat_down <- 
+#CC_norm_counts3_mean_ecotreat[which(CC_norm_counts3_mean_ecotreat$gene_name %in% ASP_ECC_noDZP_SZcst_DSP_down$Names),]
+
+
 ##alternate order of factors with control first:
 Cue_transfer_simple_lineboxplot2 <- ggplot(Cue_transfer_table, aes(x = eco_treat, y = log(mean_norm_count))) +
   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
   geom_boxplot(outlier.shape = NA, fill = "gray85", colour = "gray10") +
-  geom_line(aes(group = gene_name), colour = "gray40") +
+  geom_line(aes(group = gene_name), colour = "gray40", linewidth = 0.5) +
   geom_point(colour = "blue4", fill = "blue", alpha = 0.6, cex = 4, shape = 21)+
   theme_classic()+
   theme(panel.background = element_blank(), 
@@ -1575,7 +1619,7 @@ Cue_transfer_simple_lineboxplot2 <- ggplot(Cue_transfer_table, aes(x = eco_treat
   #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
   facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
               labeller = labeller(ecotype = ecotype.labs), strip = strip)
-Cue_transfer_simple_lineboxplot2
+#Cue_transfer_simple_lineboxplot2
 
 
 # # Subsetted graph - maybe put into supp figure. 
@@ -1620,50 +1664,78 @@ cooption_mean_simple_lineboxplot2 <- ggplot(cooption_table, aes(x = eco_treat, y
   #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
   facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
               labeller = labeller(ecotype = ecotype.labs), strip = strip)
-cooption_mean_simple_lineboxplot2
+#cooption_mean_simple_lineboxplot2
+
 
 #both in one grid with ggarrange:
 cue_t_coopt_both_lineboxplots <- ggarrange(Cue_transfer_simple_lineboxplot2, cooption_mean_simple_lineboxplot2, ncol = 1, align = "hv")
-cue_t_coopt_both_lineboxplots
+#cue_t_coopt_both_lineboxplots
 
-####
-#graph for the ASP changes thing: 
-# 
-# ASP_mean_lineboxplot1 <- ggplot(ASP_other_patterns_table, aes(x = eco_treat, y = log(mean_norm_count), colour = pattern, fill = pattern)) +
-#   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
-#   #geom_boxplot(outlier.shape = NA, fill = "gray80", colour = "grey40") +
-#   geom_boxplot(outlier.shape = NA, fill = "gray80") +
-#   geom_line(aes(group = gene_name)) +
-#   geom_point(alpha = 0.7, cex = 2, shape = 21)+
-#   theme_classic()+
-#   scale_colour_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   scale_fill_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   theme(panel.background = element_blank(), 
-#         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-#         aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
-#   xlab("Ecotype and treatment")+
-#   ylab("log of normalised gene counts")+
-#   #facet_grid(pattern~ecotype)
-#   facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
-# ASP_mean_lineboxplot1
-# 
-# DSP_mean_lineboxplot1 <- ggplot(DSP_noASP_table, aes(x = eco_treat, y = log(mean_norm_count), colour = pattern, fill = pattern)) +
-#   #geom_errorbar(aes(ymin=log(max_norm_count), ymax=log(min_norm_count)), width=0.2, position = position_dodge(0.2)) +
-#   #geom_boxplot(outlier.shape = NA, fill = "gray80", colour = "grey40") +
-#   geom_boxplot(outlier.shape = NA, fill = "gray80") +
-#   geom_line(aes(group = gene_name)) +
-#   geom_point(alpha = 0.7, cex = 2, shape = 21)+
-#   theme_classic()+
-#   scale_colour_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   scale_fill_manual(values = c("#009E73", "#0072B2", "#CC79A7"))+
-#   theme(panel.background = element_blank(), 
-#         strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
-#         aspect.ratio = 1.2, axis.title = element_text(size = 22), axis.text = element_text(size = 18))+
-#   xlab("Ecotype and treatment")+
-#   ylab("log of normalised gene counts")+
-#   #facet_grid(pattern~ecotype)
-#   facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
-# DSP_mean_lineboxplot1
+## version of boxplot with added directions as a highlight
+cooption_mean_simple_lineboxplot3 <- ggplot(cooption_table, aes(x = eco_treat, y = log(mean_norm_count), 
+                                                                colour = direction, lwd = direction)) +
+  geom_boxplot(outlier.shape = NA, colour = "gray30", fill = "gray85", lwd = 0.5) +
+  geom_line(aes(group = gene_name), show.legend = F) +
+  geom_point(fill = "red", alpha = 0.6, cex = 4, shape = 21, stroke = 0.5, show.legend = F)+
+  #geom_point(colour = "darkred", alpha = 0.6, cex = 4, shape = 21)+
+  #geom_point(colour = "darkred", fill = "red", alpha = 0.6, cex = 4, shape = 21)+
+  #scale_fill_manual(values = c("red", "palegreen"))+
+  scale_colour_manual(values = c("grey40", "magenta1"))+
+  scale_linewidth_manual(values = c(0.5, 0.9))+
+  theme_classic()+
+  theme(panel.background = element_blank(), 
+        strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
+        aspect.ratio = 1.2, axis.title = element_text(size = 20), axis.text = element_text(size = 18))+
+  xlab("Ecotype and treatment")+
+  ylab("log of normalised gene counts")+
+  scale_x_discrete(labels=c("cstC" = "Control", "cstS" = "Salt",  "cstZ" = "Zinc",
+                            "minC" = "Control", "minS" = "Salt",  "minZ" = "Zinc"))+
+  #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
+  facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
+              labeller = labeller(ecotype = ecotype.labs), strip = strip)
+cooption_mean_simple_lineboxplot3
+
+
+cue_t_coopt_both_lineboxplots3 <- ggarrange(Cue_transfer_simple_lineboxplot2, cooption_mean_simple_lineboxplot3, ncol = 1, align = "hv")
+
+##separate graphs for up and down reg genes:
+
+cooption_mean_simple_lineboxplot2_up <- ggplot(cooption_table_up, aes(x = eco_treat, y = log(mean_norm_count))) +
+  geom_boxplot(outlier.shape = NA, fill = "gray85") +
+  geom_line(aes(group = gene_name), colour = "gray40") +
+  geom_point(colour = "darkred", fill = "red", alpha = 0.6, cex = 4, shape = 21)+
+  theme_classic()+
+  theme(panel.background = element_blank(), 
+        strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
+        aspect.ratio = 1.2, axis.title = element_text(size = 20), axis.text = element_text(size = 18))+
+  xlab("Ecotype and treatment")+
+  ylab("log of normalised gene counts")+
+  scale_x_discrete(labels=c("cstC" = "Control", "cstS" = "Salt",  "cstZ" = "Zinc",
+                            "minC" = "Control", "minS" = "Salt",  "minZ" = "Zinc"))+
+  #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
+  facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
+              labeller = labeller(ecotype = ecotype.labs), strip = strip)
+
+cooption_mean_simple_lineboxplot2_down <- ggplot(cooption_table_down, aes(x = eco_treat, y = log(mean_norm_count))) +
+  geom_boxplot(outlier.shape = NA, fill = "gray85") +
+  geom_line(aes(group = gene_name), colour = "gray40") +
+  geom_point(colour = "darkred", fill = "red", alpha = 0.6, cex = 4, shape = 21)+
+  theme_classic()+
+  theme(panel.background = element_blank(), 
+        strip.background = element_blank(), strip.placement = "outside", strip.text = element_text(size = 22),
+        aspect.ratio = 1.2, axis.title = element_text(size = 20), axis.text = element_text(size = 18))+
+  xlab("Ecotype and treatment")+
+  ylab("log of normalised gene counts")+
+  scale_x_discrete(labels=c("cstC" = "Control", "cstS" = "Salt",  "cstZ" = "Zinc",
+                            "minC" = "Control", "minS" = "Salt",  "minZ" = "Zinc"))+
+  #facet_wrap(~ecotype, ncol = 2, scales="free_x", strip.position = "top")
+  facet_wrap2(~ecotype, ncol = 2, scales = "free_x", strip.position = "top",
+              labeller = labeller(ecotype = ecotype.labs), strip = strip)
+
+
+cue_t_coopt_both_lineboxplots_up_down <- ggarrange(Cue_transfer_simple_lineboxplot2, cooption_mean_simple_lineboxplot2_down, cooption_mean_simple_lineboxplot2_up, ncol = 1, align = "hv")
+
+
 
 ###11.4.3 export plots to pdfs ----
 
@@ -1671,28 +1743,44 @@ cue_t_coopt_both_lineboxplots
 # # #export with control over dimensions:
 # # 
 setFplot_page(page = "a4", margins = "normal", units = "tw",pt = 20, w2h = 1.8, reset = FALSE)
-# # 
 # 
+# 
+# 
+# pdf_fit(file = "Cue_transfer_simple_lineboxplot2_09_04_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
+# Cue_transfer_simple_lineboxplot2
+# dev.off()
+# 
+# pdf_fit(file = "cooption_mean_simple_lineboxplot2_09_04_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
+# cooption_mean_simple_lineboxplot2
+# dev.off()
+# 
+# pdf(width = 30, height = 20, paper = "a4", file = "cue_t_coopt_both_lineboxplots_02_08_24.pdf")
+# cue_t_coopt_both_lineboxplots
+# dev.off()
+# 
+# pdf_fit(file = "cue_t_coopt_both_lineboxplots_v2_02_08_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
+# cue_t_coopt_both_lineboxplots
+# dev.off()
+# 
+# pdf_fit(file = "cue_t_coopt_both_lineboxplots_v4_02_08_24.pdf", pt = 26, width = 1.8, w2h = 0.7)
+# cue_t_coopt_both_lineboxplots
+# dev.off()
+# 
+#write out alternative plot versions:
+# pdf_fit(file = "cue_t_coopt_both_lineboxplots3_v2_27_11_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
+# cue_t_coopt_both_lineboxplots3
+# dev.off()
 
-pdf_fit(file = "Cue_transfer_simple_lineboxplot2_09_04_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
-Cue_transfer_simple_lineboxplot2
-dev.off()
+#alternative plots scaled like this:
 
-pdf_fit(file = "cooption_mean_simple_lineboxplot2_09_04_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
-cooption_mean_simple_lineboxplot2
-dev.off()
-
-pdf(width = 30, height = 20, paper = "a4", file = "cue_t_coopt_both_lineboxplots_02_08_24.pdf")
-cue_t_coopt_both_lineboxplots
-dev.off()
-
-pdf_fit(file = "cue_t_coopt_both_lineboxplots_v2_02_08_24.pdf", pt = 26, width = 1.8, w2h = 0.8)
-cue_t_coopt_both_lineboxplots
-dev.off()
-
-pdf_fit(file = "cue_t_coopt_both_lineboxplots_v4_02_08_24.pdf", pt = 26, width = 1.8, w2h = 0.7)
-cue_t_coopt_both_lineboxplots
-dev.off()
+# pdf_fit(file = "cue_t_coopt_both_lineboxplots3_v3_27_11_24.pdf", pt = 26, width = 1.8, w2h = 0.7)
+# cue_t_coopt_both_lineboxplots3
+# dev.off()
+# 
+# 
+# pdf_fit(file = "cue_t_coopt_both_lineboxplots_up_down_v3_27_11_24.pdf", pt = 26, width = 1.8, w2h = 0.7)
+# cue_t_coopt_both_lineboxplots_up_down
+# dev.off()
 
 ######################################################################################################-
 ##11.5 plot numbers of genes with different patterns in a barplot to go above graphs in section  ----
@@ -1897,8 +1985,6 @@ EDZP_annots_Names <- EDZP_annots$mRNA
 ASP_DSP_same_annots_Names <- ASP_DSP_same_annots$mRNA
 cooption_annots_Names <- cooption_annots$mRNA
 
-
-
 cue_transfer_annots_Names <- cue_transfer_annots$mRNA
 
 # sub groups I am not using:
@@ -1953,21 +2039,21 @@ length(geneNames)
 
 #genelists are those sets of genes you find interesting.
 
-# geneList_ECC <- factor(as.integer(geneNames %in% ECC_annots_Names))
-# names(geneList_ECC) <- geneNames
-# str(geneList_ECC)
+geneList_ECC <- factor(as.integer(geneNames %in% ECC_annots_Names))
+names(geneList_ECC) <- geneNames
+str(geneList_ECC)
 # 
 # geneList_ECZ <- factor(as.integer(geneNames %in% ECZ_annots_Names))
 # names(geneList_ECZ) <- geneNames
 # str(geneList_ECZ)
 
-geneList_ASP <- factor(as.integer(geneNames %in% ASP_annots_Names))
-names(geneList_ASP) <- geneNames
-str(geneList_ASP)
-
-geneList_DSP <- factor(as.integer(geneNames %in% DSP_annots_Names))
-names(geneList_DSP) <- geneNames
-str(geneList_DSP)
+# geneList_ASP <- factor(as.integer(geneNames %in% ASP_annots_Names))
+# names(geneList_ASP) <- geneNames
+# str(geneList_ASP)
+# 
+# geneList_DSP <- factor(as.integer(geneNames %in% DSP_annots_Names))
+# names(geneList_DSP) <- geneNames
+# str(geneList_DSP)
 
 # geneList_ASP_DSP <- factor(as.integer(geneNames %in% ASP_DSP_same_annots_Names))
 # names(geneList_ASP_DSP) <- geneNames
@@ -1977,9 +2063,9 @@ str(geneList_DSP)
 # names(geneList_AZP) <- geneNames
 # str(geneList_AZP)
 # 
-# geneList_DZP <- factor(as.integer(geneNames %in% DZP_annots_Names))
-# names(geneList_DZP) <- geneNames
-# str(geneList_DZP)
+geneList_DZP <- factor(as.integer(geneNames %in% DZP_annots_Names))
+names(geneList_DZP) <- geneNames
+str(geneList_DZP)
 # 
 # geneList_EDZP <- factor(as.integer(geneNames %in% EDZP_annots_Names))
 # names(geneList_EDZP) <- geneNames
@@ -2011,9 +2097,9 @@ str(geneList_cooption)
 ###12.3.4 topGO data set up a new one for each topGO ontology analysis for each of my main gene sets of interest ----
 
 #onotology options are BP = biological process, MF  = molecular function, CC = cellular component 
-# GOdata_ECC <- new("topGOdata", ontology = "BP", allGenes = geneList_ECC, 
-#                       annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
-# numGenes(GOdata_ECC)
+GOdata_ECC <- new("topGOdata", ontology = "BP", allGenes = geneList_ECC,
+                      annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
+numGenes(GOdata_ECC)
 # 
 # GOdata_ECZ <- new("topGOdata", ontology = "BP", allGenes = geneList_ECZ, 
 #                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
@@ -2035,9 +2121,9 @@ str(geneList_cooption)
 #                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
 # numGenes(GOdata_AZP)
 # 
-# GOdata_DZP <- new("topGOdata", ontology = "BP", allGenes = geneList_DZP,
-#                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
-# numGenes(GOdata_DZP)
+GOdata_DZP <- new("topGOdata", ontology = "BP", allGenes = geneList_DZP,
+                   annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
+numGenes(GOdata_DZP)
 # 
 # GOdata_EDZP <- new("topGOdata", ontology = "BP", allGenes = geneList_EDZP, 
 #                    annot = annFUN.gene2GO, gene2GO = geneID2GO, nodeSize = 5)
@@ -2065,21 +2151,21 @@ str(geneList_cooption)
 
 
 #run the topGO ontology test:
-# fisher_weight_ECC <- runTest(GOdata_ECC, algorithm = "weight", statistic = "fisher")
-# head(score(fisher_weight_ECC))
-# geneData(fisher_weight_ECC)
+fisher_weight_ECC <- runTest(GOdata_ECC, algorithm = "weight", statistic = "fisher")
+head(score(fisher_weight_ECC))
+geneData(fisher_weight_ECC)
 # 
 # fisher_weight_ECZ <- runTest(GOdata_ECZ, algorithm = "weight", statistic = "fisher")
 # head(score(fisher_weight_ECZ))
 # geneData(fisher_weight_ECZ)
 
-fisher_weight_ASP <- runTest(GOdata_ASP, algorithm = "weight", statistic = "fisher")
-head(score(fisher_weight_ASP))
-geneData(fisher_weight_ASP)
-
-fisher_weight_DSP <- runTest(GOdata_DSP, algorithm = "weight", statistic = "fisher")
-head(score(fisher_weight_DSP))
-geneData(fisher_weight_DSP)
+# fisher_weight_ASP <- runTest(GOdata_ASP, algorithm = "weight", statistic = "fisher")
+# head(score(fisher_weight_ASP))
+# geneData(fisher_weight_ASP)
+# 
+# fisher_weight_DSP <- runTest(GOdata_DSP, algorithm = "weight", statistic = "fisher")
+# head(score(fisher_weight_DSP))
+# geneData(fisher_weight_DSP)
 
 # fisher_weight_ASP_DSP <- runTest(GOdata_ASP_DSP, algorithm = "weight", statistic = "fisher")
 # head(score(fisher_weight_ASP_DSP))
@@ -2089,25 +2175,25 @@ geneData(fisher_weight_DSP)
 # head(score(fisher_weight_AZP))
 # geneData(fisher_weight_AZP)
 # 
-# fisher_weight_DZP <- runTest(GOdata_DZP, algorithm = "weight", statistic = "fisher")
-# head(score(fisher_weight_DZP))
-# geneData(fisher_weight_DZP)
+fisher_weight_DZP <- runTest(GOdata_DZP, algorithm = "weight", statistic = "fisher")
+head(score(fisher_weight_DZP))
+geneData(fisher_weight_DZP)
 
 # fisher_weight_EDZP <- runTest(GOdata_EDZP, algorithm = "weight", statistic = "fisher")
 # head(score(fisher_weight_EDZP))
 # geneData(fisher_weight_EDZP)
 
-fisher_weight_cue_transfer <- runTest(GOdata_cue_transfer, algorithm = "weight", statistic = "fisher")
-head(score(fisher_weight_cue_transfer))
-geneData(fisher_weight_cue_transfer)
+# fisher_weight_cue_transfer <- runTest(GOdata_cue_transfer, algorithm = "weight", statistic = "fisher")
+# head(score(fisher_weight_cue_transfer))
+# geneData(fisher_weight_cue_transfer)
 
 # fisher_weight_harmonisation <- runTest(GOdata_harmonisation, algorithm = "weight", statistic = "fisher")
 # head(score(fisher_weight_harmonisation))
 # geneData(fisher_weight_harmonisation)
 
-fisher_weight_cooption <- runTest(GOdata_cooption, algorithm = "weight", statistic = "fisher")
-head(score(fisher_weight_cooption))
-geneData(fisher_weight_cooption)
+# fisher_weight_cooption <- runTest(GOdata_cooption, algorithm = "weight", statistic = "fisher")
+# head(score(fisher_weight_cooption))
+# geneData(fisher_weight_cooption)
 
 # fisher_weight_cooption_noDSP <- runTest(GOdata_cooption_noDSP, algorithm = "weight", statistic = "fisher")
 # head(score(fisher_weight_cooption_noDSP))
@@ -2121,16 +2207,16 @@ geneData(fisher_weight_cooption)
 ###12.3.5 TOPGO look at results - generate results tables and export significant results ----
 
 #gene tables
-# res_fisher_weight_ECC <- GenTable(GOdata_ECC, weight_fisher_P = fisher_weight_ECC, topNodes = 50, numChar = 1000)
-# #view(res_fisher_weight_ECC)
+res_fisher_weight_ECC <- GenTable(GOdata_ECC, weight_fisher_P = fisher_weight_ECC, topNodes = 50, numChar = 1000)
+#view(res_fisher_weight_ECC)
 # 
 # res_fisher_weight_ECZ <- GenTable(GOdata_ECZ, weight_fisher_P = fisher_weight_ECZ, topNodes = 50, numChar = 1000)
 # #view(res_fisher_weight_ECZ)
 
-res_fisher_weight_ASP <- GenTable(GOdata_ASP, weight_fisher_P = fisher_weight_ASP, topNodes = 50, numChar = 1000)
+# res_fisher_weight_ASP <- GenTable(GOdata_ASP, weight_fisher_P = fisher_weight_ASP, topNodes = 50, numChar = 1000)
 #view(res_fisher_weight_ASP)
 
-res_fisher_weight_DSP <- GenTable(GOdata_DSP, weight_fisher_P = fisher_weight_DSP, topNodes = 50, numChar = 1000)
+# res_fisher_weight_DSP <- GenTable(GOdata_DSP, weight_fisher_P = fisher_weight_DSP, topNodes = 50, numChar = 1000)
 #view(res_fisher_weight_DSP)
 
 # res_fisher_weight_ASP_DSP <- GenTable(GOdata_ASP_DSP, weight_fisher_P = fisher_weight_ASP_DSP, topNodes = 50, numChar = 1000)
@@ -2139,19 +2225,19 @@ res_fisher_weight_DSP <- GenTable(GOdata_DSP, weight_fisher_P = fisher_weight_DS
 # res_fisher_weight_AZP <- GenTable(GOdata_AZP, weight_fisher_P = fisher_weight_AZP, topNodes = 50, numChar = 1000)
 # #view(res_fisher_weight_AZP)
 # 
-# res_fisher_weight_DZP <- GenTable(GOdata_DZP, weight_fisher_P = fisher_weight_DZP, topNodes = 50, numChar = 1000)
-# #view(res_fisher_weight_DZP)
+res_fisher_weight_DZP <- GenTable(GOdata_DZP, weight_fisher_P = fisher_weight_DZP, topNodes = 50, numChar = 1000)
+#view(res_fisher_weight_DZP)
 
 # res_fisher_weight_EDZP <- GenTable(GOdata_EDZP, weight_fisher_P = fisher_weight_EDZP, topNodes = 50, numChar = 1000)
 # #view(res_fisher_weight_EDZP)
 
-res_fisher_weight_cue_transfer <- GenTable(GOdata_cue_transfer, weight_fisher_P = fisher_weight_cue_transfer, topNodes = 50, numChar = 1000)
+# res_fisher_weight_cue_transfer <- GenTable(GOdata_cue_transfer, weight_fisher_P = fisher_weight_cue_transfer, topNodes = 50, numChar = 1000)
 #view(res_fisher_weight_cue_transfer)
 
 # res_fisher_weight_harmonisation <- GenTable(GOdata_harmonisation, weight_fisher_P = fisher_weight_harmonisation, topNodes = 50, numChar = 1000)
 # #view(res_fisher_weight_harmonisation)
 
-res_fisher_weight_cooption <- GenTable(GOdata_cooption, weight_fisher_P = fisher_weight_cooption, topNodes = 50, numChar = 1000)
+# res_fisher_weight_cooption <- GenTable(GOdata_cooption, weight_fisher_P = fisher_weight_cooption, topNodes = 50, numChar = 1000)
 #view(res_fisher_cooption)
 
 # res_fisher_weight_cooption_noDSP <- GenTable(GOdata_cooption_noDSP, weight_fisher_P = fisher_weight_cooption_noDSP, topNodes = 50, numChar = 1000)
@@ -2162,30 +2248,30 @@ res_fisher_weight_cooption <- GenTable(GOdata_cooption, weight_fisher_P = fisher
 
 
 ##significant GO terms for the gene sets:
-# sign_fisher_weight_ECC <- subset(res_fisher_weight_ECC, as.numeric(weight_fisher_P) < 0.05)
+sign_fisher_weight_ECC <- subset(res_fisher_weight_ECC, as.numeric(weight_fisher_P) < 0.05)
 # sign_fisher_weight_ECZ <- subset(res_fisher_weight_ECZ, as.numeric(weight_fisher_P) < 0.05)
-sign_fisher_weight_ASP <- subset(res_fisher_weight_ASP, as.numeric(weight_fisher_P) < 0.05)
-sign_fisher_weight_DSP <- subset(res_fisher_weight_DSP, as.numeric(weight_fisher_P) < 0.05)
+# sign_fisher_weight_ASP <- subset(res_fisher_weight_ASP, as.numeric(weight_fisher_P) < 0.05)
+# sign_fisher_weight_DSP <- subset(res_fisher_weight_DSP, as.numeric(weight_fisher_P) < 0.05)
 # sign_fisher_weight_ASP_DSP <- subset(res_fisher_weight_ASP_DSP, as.numeric(weight_fisher_P) < 0.05)
 # sign_fisher_weight_AZP <- subset(res_fisher_weight_AZP, as.numeric(weight_fisher_P) < 0.05)
-# sign_fisher_weight_DZP <- subset(res_fisher_weight_DZP, as.numeric(weight_fisher_P) < 0.05)
+sign_fisher_weight_DZP <- subset(res_fisher_weight_DZP, as.numeric(weight_fisher_P) < 0.05)
 # sign_fisher_weight_EDZP <- subset(res_fisher_weight_EDZP, as.numeric(weight_fisher_P) < 0.05)
 
-sign_fisher_weight_cue_transfer <- subset(res_fisher_weight_cue_transfer, as.numeric(weight_fisher_P) < 0.05)
+# sign_fisher_weight_cue_transfer <- subset(res_fisher_weight_cue_transfer, as.numeric(weight_fisher_P) < 0.05)
 # sign_fisher_weight_harmonisation <- subset(res_fisher_weight_harmonisation, as.numeric(weight_fisher_P) < 0.05)
 
-sign_fisher_weight_cooption <- subset(res_fisher_weight_cooption, as.numeric(weight_fisher_P) < 0.05)
+# sign_fisher_weight_cooption <- subset(res_fisher_weight_cooption, as.numeric(weight_fisher_P) < 0.05)
 # sign_fisher_weight_cooption_noDSP <- subset(res_fisher_weight_cooption_noDSP, as.numeric(weight_fisher_P) < 0.05)
 # sign_fisher_weight_cooption_DSP <- subset(res_fisher_weight_cooption_DSP, as.numeric(weight_fisher_P) < 0.05)
 
 
 ##write files for the significant fisher results so I have the tables saved as files:
-# write.csv(sign_fisher_weight_ECC, file = "topGO_sign_fisher_weight_ECC_23_05_23.csv")
+write.csv(sign_fisher_weight_ECC, file = "topGO_sign_fisher_weight_ECC_09_08_24.csv")
 # write.csv(sign_fisher_weight_ECZ, file = "topGO_sign_fisher_weight_ECZ_23_05_23.csv")
 # write.csv(sign_fisher_weight_ASP, file = "topGO_sign_fisher_weight_ASP_23_05_23.csv")
 # write.csv(sign_fisher_weight_DSP, file = "topGO_sign_fisher_weight_DSP_23_05_23.csv")
 # write.csv(sign_fisher_weight_AZP, file = "topGO_sign_fisher_weight_AZP_23_05_23.csv")
-# write.csv(sign_fisher_weight_DZP, file = "topGO_sign_fisher_weight_DZP_23_05_23.csv")
+write.csv(sign_fisher_weight_DZP, file = "topGO_sign_fisher_weight_DZP_09_08_24.csv")
 # write.csv(sign_fisher_weight_EDZP, file = "topGO_sign_fisher_weight_EDZP_23_05_23.csv")
 ##extra single enrichments added later on:
 #write.csv(sign_fisher_weight_ASP_DSP, "topGO_sign_fisher_weight_ASP_DSP_23_06_23.csv")
@@ -2200,8 +2286,8 @@ sign_fisher_weight_cooption <- subset(res_fisher_weight_cooption, as.numeric(wei
 
 
 #look for overlaps between enriched functions for gene groups of interest: 
-ASP_DSP_GO_overlap <- sign_fisher_weight_DSP[sign_fisher_weight_DSP$GO.ID %in% sign_fisher_weight_ASP$GO.ID,]
-ASP_DSP_GO_overlap_terms <- dplyr::select(ASP_DSP_GO_overlap, GO.ID, Term)
+# ASP_DSP_GO_overlap <- sign_fisher_weight_DSP[sign_fisher_weight_DSP$GO.ID %in% sign_fisher_weight_ASP$GO.ID,]
+# ASP_DSP_GO_overlap_terms <- dplyr::select(ASP_DSP_GO_overlap, GO.ID, Term)
 
 # #overlaps write:
 # write.csv(ASP_DSP_GO_overlap_terms, file = "ASP_DSP_shared_GO_terms_26_05_23.csv")
